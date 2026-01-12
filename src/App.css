@@ -1,0 +1,798 @@
+/* Colores principales
+
+Pantone 288: #103585
+
+Pantone 2935: #2858BF 
+
+Tipografía
+
+Georama bold y georama regular
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Georama:wght@400;700&display=swap');
+
+* {
+  font-family: 'Georama', sans-serif;
+}
+
+/* Fondo con marca de agua del logo */
+.watermark-background {
+  position: relative;
+  min-height: 100vh;
+}
+
+.watermark-background::before {
+  content: '';
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60%;
+  max-width: 800px;
+  height: 60vh;
+  background-image: url('./assets/pictures/logo_watermark.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: 0.3;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Estilos de la barra de navegación */
+.navbar-custom {
+  background-color: #103585;
+}
+
+.navbar-logo {
+  height: 50px;
+}
+
+.navbar-title {
+  font-weight: 700;
+  color: whitesmoke;
+  font-size: 24px;
+}
+
+.navbar-title:hover {
+  color: #fff;
+}
+
+.offcanvas-custom {
+  background-color: #2858BF;
+  color: whitesmoke;
+}
+
+.offcanvas-custom .nav-link {
+  color: rgba(255, 255, 255, 0.95);
+  transition: color 0.3s ease;
+  font-weight: 400;
+}
+
+.offcanvas-custom .nav-link:hover,
+.offcanvas-custom .nav-link.active {
+  color: #fff;
+  font-weight: 700;
+}
+
+.offcanvas-custom .dropdown-divider {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Estilos del Dashboard */
+.user-text {
+  padding: 10px 20px 0px 20px;
+  text-align: center;
+  color: #103585;
+  margin-bottom: 5px;
+}
+
+.session-info {
+  color: #2858BF;
+  font-size: 0.95rem;
+  margin-bottom: 20px;
+}
+
+.session-info strong {
+  color: #103585;
+  font-weight: 700;
+}
+
+.admin-panel {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin-top: 10vh;
+  margin-bottom: 10vh;
+}
+
+.admin-button-container {
+  margin: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.module-link {
+  text-decoration: none;
+}
+
+.admin-button {
+  width: 300px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-weight: 700;
+}
+
+.admin-button:hover {
+  transform: scale(1.05);
+  transition: transform 0.2s ease;
+}
+
+/* Botones personalizados con los colores de la app */
+.btn-primary-custom {
+  background-color: #103585;
+  border-color: #103585;
+  color: white;
+}
+
+.btn-primary-custom:hover {
+  background-color: #0d2a6b;
+  border-color: #0d2a6b;
+  color: white;
+}
+
+.btn-secondary-custom {
+  background-color: #2858BF;
+  border-color: #2858BF;
+  color: white;
+}
+
+.btn-secondary-custom:hover {
+  background-color: #1f4699;
+  border-color: #1f4699;
+  color: white;
+}
+
+/* Estilos del SearchBar */
+.search-container {
+  padding: 20px;
+  width: 100%;
+  background: linear-gradient(135deg, #e8eef5 0%, #d9e5f2 100%);
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 20px;
+  border-radius: 30px;
+}
+
+.search-form-group {
+  margin-left: 10vw;
+  margin-right: 10vw;
+  flex: 1 1 200px;
+  min-width: 200px;
+}
+
+.search-input {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 10px 15px;
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  border-color: #103585;
+  box-shadow: 0 0 0 0.2rem rgba(16, 53, 133, 0.15);
+  outline: none;
+}
+
+/* Estilos para enlaces de WhatsApp */
+.whatsapp-link {
+  color: #25D366;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 5px;
+  background-color: rgba(37, 211, 102, 0.1);
+  transition: all 0.3s ease;
+}
+
+.whatsapp-link:hover {
+  background-color: rgba(37, 211, 102, 0.2);
+  color: #20BA5A;
+}
+
+/* Estilos del Login */
+.login-container {
+  background: linear-gradient(135deg, #103585 0%, #2858BF 100%);
+  min-height: 100vh;
+}
+
+.login-wrapper {
+  min-height: 100vh;
+}
+
+.login-card {
+  border-radius: 20px;
+  border: none;
+  overflow: hidden;
+}
+
+.login-title {
+  font-family: 'Georama', sans-serif;
+  font-weight: 700;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.login-logo {
+  max-width: 200px;
+  height: auto;
+}
+
+.login-subtitle {
+  font-family: 'Georama', sans-serif;
+  font-size: 1.1rem;
+  margin-bottom: 0;
+}
+
+.login-input-icon {
+  border: none;
+  border-radius: 10px 0 0 10px;
+}
+
+.login-input {
+  border: 1px solid #ddd;
+  border-left: none;
+  border-radius: 0 10px 10px 0;
+  padding: 12px 15px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.login-input:focus {
+  border-color: #2858BF;
+  box-shadow: 0 0 0 0.2rem rgba(40, 88, 191, 0.25);
+}
+
+.login-toggle-password {
+  border-radius: 0 10px 10px 0;
+  border-left: none;
+}
+
+.login-toggle-password:hover {
+  background-color: rgba(16, 53, 133, 0.1);
+}
+
+.login-submit-btn {
+  border-radius: 10px;
+  padding: 12px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+.login-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(40, 88, 191, 0.4);
+}
+
+.login-submit-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Estilos para vista previa de imagen de mascota */
+.pet-image-preview-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px auto;
+}
+
+.pet-image-preview {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 5px solid #2858BF;
+  box-shadow: 0 8px 20px rgba(40, 88, 191, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.pet-image-preview:hover {
+  transform: scale(1.05);
+}
+
+.pet-image-placeholder {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 3px dashed #ccc;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #f8f9fa;
+}
+
+.pet-image-placeholder p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+/* Estilos para las cards de mascotas */
+.pet-card {
+  border-radius: 15px;
+  border: 2px solid #e0e0e0;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.pet-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(40, 88, 191, 0.3) !important;
+  border-color: #2858BF;
+}
+
+.pet-card-header {
+  border-radius: 15px 15px 0 0;
+}
+
+.pet-card-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.pet-card-placeholder {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 4px solid white;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.pet-card-info {
+  margin: 15px 0;
+}
+
+.pet-info-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 8px 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.pet-owner-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0;
+  color: #333;
+  font-weight: 500;
+}
+
+.pet-contact-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.pet-contact-buttons .btn {
+  font-size: 0.85rem;
+  padding: 5px 12px;
+  border: none;
+}
+
+.pet-pending-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0;
+  padding: 5px 10px;
+  background-color: rgba(108, 117, 125, 0.1);
+  border-radius: 15px;
+}
+
+.pet-dates-info {
+  margin-top: 10px;
+  padding: 8px;
+  background-color: rgba(108, 117, 125, 0.05);
+  border-radius: 8px;
+
+}
+
+.pet-date-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 4px 0;
+}
+
+/* Estilos para el botón de filtrado de pendientes */
+.btn-outline-secondary:hover {
+  transform: translateY(-2px);
+}
+
+.btn-secondary:hover {
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .pet-card {
+    margin-bottom: 20px;
+  }
+}
+
+/* Estilos para el timeline de historias clínicas */
+.timeline-container {
+  position: relative;
+  padding: 20px 0;
+}
+
+.timeline-item {
+  position: relative;
+  padding-left: 50px;
+  margin-bottom: 30px;
+}
+
+.timeline-line {
+  position: absolute;
+  left: 19px;
+  top: 40px;
+  bottom: -30px;
+  width: 3px;
+  background: linear-gradient(to bottom, #2858BF, #103585);
+}
+
+.timeline-dot {
+  position: absolute;
+  left: 10px;
+  top: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #2858BF;
+  border: 4px solid #ffffff;
+  box-shadow: 0 0 0 4px rgba(40, 88, 191, 0.2);
+  z-index: 1;
+}
+
+.timeline-content {
+  background: #ffffff;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.timeline-content:hover {
+  border-color: #2858BF;
+  box-shadow: 0 6px 20px rgba(40, 88, 191, 0.15);
+  transform: translateX(5px);
+}
+
+.timeline-header {
+  margin-bottom: 12px;
+}
+
+.timeline-summary p {
+  color: #555;
+}
+
+.timeline-expanded {
+  animation: expandAnimation 0.3s ease-out;
+}
+
+@keyframes expandAnimation {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 1000px;
+  }
+}
+
+@media (max-width: 768px) {
+  .timeline-item {
+    padding-left: 40px;
+  }
+
+  .timeline-dot {
+    left: 5px;
+    width: 18px;
+    height: 18px;
+  }
+
+  .timeline-line {
+    left: 14px;
+  }
+}
+
+/* Animación para la huella de mascota */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+/* Estilos para documentos pendientes de revisión */
+.document-pending {
+  border-color: #dc3545 !important;
+  background-color: #fff5f5 !important;
+}
+
+.document-pending-footer {
+  background-color: #ffe0e0 !important;
+}
+
+.badge-pending {
+  animation: pulse-badge 2s ease-in-out infinite;
+}
+
+@keyframes pulse-badge {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Animación para botón con documentos pendientes */
+.btn-blinking {
+  animation: blink-button 1.5s ease-in-out infinite;
+  position: relative;
+}
+
+@keyframes blink-button {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(220, 53, 69, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(220, 53, 69, 0.8);
+  }
+}
+
+.btn-blinking::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  bottom: -2px;
+  left: -2px;
+  border-radius: inherit;
+  border: 2px solid #dc3545;
+  animation: pulse-border 1.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes pulse-border {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.05);
+  }
+}
+
+/* Estilos para el scrollbar del dropdown de búsqueda de usuarios */
+div[style*="maxHeight: 200px"]::-webkit-scrollbar {
+  width: 8px;
+}
+
+div[style*="maxHeight: 200px"]::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 10px;
+}
+
+div[style*="maxHeight: 200px"]::-webkit-scrollbar-thumb {
+  background: #2858BF;
+  border-radius: 10px;
+}
+
+div[style*="maxHeight: 200px"]::-webkit-scrollbar-thumb:hover {
+  background: #103585;
+}
+
+/* Estilos para la tabla de usuarios */
+.table td {
+  vertical-align: middle;
+}
+
+.table tbody tr:hover {
+  background-color: rgba(40, 88, 191, 0.05) !important;
+}
+
+/* SystemNotes Styles */
+.system-notes-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.system-notes-main-title {
+  color: #103585;
+  font-weight: 700;
+  font-size: 2.2rem;
+}
+
+.system-notes-subtitle {
+  color: #2858BF;
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+.system-notes-section {
+  margin-top: 40px;
+  text-align: justify;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+.system-notes-section:first-of-type {
+  margin-top: 20px;
+}
+
+.system-notes-title {
+  color: #333;
+  font-weight: 700;
+  font-size: 1.8rem;
+  border-bottom: 3px solid #2858BF;
+  padding-bottom: 15px;
+  margin-bottom: 25px;
+  position: relative;
+}
+
+.system-notes-title::after {
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(135deg, #2858BF, #103585);
+  border-radius: 2px;
+}
+
+.notes-timeline {
+  list-style: none;
+  padding-left: 0;
+  position: relative;
+}
+
+.notes-timeline::before {
+  content: "";
+  position: absolute;
+  left: 20px;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(to bottom, #2858BF, #f8f9fa);
+  border-radius: 2px;
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 30px;
+  padding-left: 60px;
+}
+
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  width: 25px;
+  height: 25px;
+  background: #2858BF;
+  border-radius: 50%;
+  border: 4px solid #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.timeline-date {
+  font-weight: 700;
+  color: #103585;
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.timeline-updates {
+  list-style: none;
+  padding-left: 0;
+  margin-left: 0;
+}
+
+.update-item {
+  background: #f8f9fa;
+  border-left: 4px solid #2858BF;
+  padding: 12px 20px;
+  margin-bottom: 10px;
+  border-radius: 0 8px 8px 0;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.update-item:hover {
+  background: #e9ecef;
+  transform: translateX(5px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.update-item::before {
+  content: "•";
+  color: #2858BF;
+  font-weight: bold;
+  font-size: 1.2rem;
+  position: absolute;
+  left: 8px;
+  top: 12px;
+}
+
+.update-item {
+  padding-left: 25px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .system-notes-container {
+    padding: 15px;
+  }
+
+  .system-notes-section {
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .system-notes-title {
+    font-size: 1.5rem;
+  }
+
+  .timeline-item {
+    padding-left: 40px;
+  }
+
+  .notes-timeline::before {
+    left: 15px;
+  }
+
+  .timeline-item::before {
+    left: 3px;
+    width: 20px;
+    height: 20px;
+  }
+}
+
