@@ -26,6 +26,18 @@ export default function SystemNotes() {
             <h2 className="system-notes-title">Registro de Actualizaciones</h2>
             <ul className="notes-timeline">
               <li className="timeline-item">
+                <span className="timeline-date">23 de Enero de 2026</span>
+                <ul className="timeline-updates">
+                  <li className="update-item">
+                    Visualización en la información general del paciente el último peso de la mascota y su fecha correspondiente
+                  </li>
+                  <li className="update-item">
+                    Corrección en la visualización del botón de indicaciones de medicamentos para el tutor
+                  </li>
+                </ul>
+              </li>
+
+              <li className="timeline-item">
                 <span className="timeline-date">9 de Enero de 2026</span>
                 <ul className="timeline-updates">
                   <li className="update-item">

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { GetPetDetail, GetVetRecords, GetUsers } from "../../../redux/actions";
+import { GetPetDetail, GetVetRecords, GetUsers, GetPrescriptionMedications } from "../../../redux/actions";
 import NavBar from "../../NavBar";
 import BackButton from "../../BackButton";
 import { Card, Row, Col, Button, Modal } from "react-bootstrap";
@@ -17,6 +17,7 @@ import {
   FaCheckCircle,
   FaFileMedical,
   FaArrowLeft,
+  FaWeight,
 } from "react-icons/fa";
 import { FaScissors } from "react-icons/fa6";
 import {
@@ -41,6 +42,8 @@ export default function PetDetail() {
   const authenticatedUser = useSelector((state) => state.authenticatedUser);
   const petDetail = useSelector((state) => state.petDetail);
   const vetRecords = useSelector(selectVetRecordsByDate);
+  console.log(vetRecords);
+  
   const [showImageModal, setShowImageModal] = useState(false);
 
   useEffect(() => {
@@ -52,6 +55,8 @@ export default function PetDetail() {
     dispatch(GetPetDetail(id));
     dispatch(GetVetRecords());
     dispatch(GetUsers());
+    dispatch(GetPrescriptionMedications());
+
   }, [dispatch, id, authenticatedUser, navigate]);
 
   // Filtrar historias clínicas de esta mascota
@@ -116,6 +121,17 @@ export default function PetDetail() {
     return <FaPaw color="#2858BF" size={40} />;
   };
 
+ // Función para obtener el último peso registrado
+  const getLastWeight = () => {
+    const recordsWithWeight = petVetRecords.filter((record) => record.weight);
+    console.log(recordsWithWeight);
+    
+    if (recordsWithWeight.length === 0) {
+      return null;
+    }
+    
+    return recordsWithWeight[0]; // Ya viene ordenado por fecha descendente
+  };
   return (
     <>
       <NavBar />
@@ -378,6 +394,45 @@ export default function PetDetail() {
                     >
                       {getSexName(parseInt(petDetail.sex))}
                     </p>
+                  </Col>
+                  <Col md={6} className="mb-3">
+                    <p style={{ marginBottom: "5px", color: "#666" }}>
+                      <FaWeight color="#2858BF" /> <strong>Último Peso:</strong>
+                    </p>
+                    {getLastWeight() ? (
+                      <div style={{ marginLeft: "25px" }}>
+                        <p
+                          style={{
+                            fontSize: "1.1rem",
+                            color: "#333",
+                            marginBottom: "5px",
+                          }}
+                        >
+                          {`${getLastWeight().weight} kg`}
+                        </p>
+                        <p
+                          style={{
+                            fontSize: "0.9rem",
+                            color: "#666",
+                            fontStyle: "italic",
+                            marginBottom: "0",
+                          }}
+                        >
+                          ({formatDate(getLastWeight().event_date)})
+                        </p>
+                      </div>
+                    ) : (
+                      <p
+                        style={{
+                          fontSize: "1rem",
+                          color: "#999",
+                          marginLeft: "25px",
+                          fontStyle: "italic",
+                        }}
+                      >
+                        Sin registro
+                      </p>
+                    )}
                   </Col>
                   {petDetail.owner && (
                     <Col md={6} className="mb-3">
