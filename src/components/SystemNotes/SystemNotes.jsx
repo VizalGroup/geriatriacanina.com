@@ -26,6 +26,18 @@ export default function SystemNotes() {
             <h2 className="system-notes-title">Registro de Actualizaciones</h2>
             <ul className="notes-timeline">
               <li className="timeline-item">
+                <span className="timeline-date">27 de Enero de 2026</span>
+                <ul className="timeline-updates">
+                  <li className="update-item">
+                    Corrección de errores al editar indicaciones médicas con medicamentos asociados
+                  </li>
+                  <li className="update-item">
+                    Agregado del último peso registrado del paciente en los PDFs de indicaciones médicas (con fecha correspondiente o mensaje "Sin registros" si no existe)
+                  </li>
+                </ul>
+              </li>
+
+              <li className="timeline-item">
                 <span className="timeline-date">23 de Enero de 2026</span>
                 <ul className="timeline-updates">
                   <li className="update-item">

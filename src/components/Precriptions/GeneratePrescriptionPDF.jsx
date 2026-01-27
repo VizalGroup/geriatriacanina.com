@@ -17,10 +17,25 @@ export default function GeneratePrescriptionPDF({ prescription }) {
   const prescriptionMedications = useSelector(
     (state) => state.prescriptionMedications
   );
+  const vetRecords = useSelector((state) => state.vetRecords);
 
   // Buscar el pet completo con owner
   const pet = pets.find(p => p.id === prescription.pet_id);
   const owner = pet?.owner;
+
+  // Función para obtener el último peso registrado
+  const getLastWeight = () => {
+    const petVetRecords = vetRecords.filter(
+      (record) => parseInt(record.pet_id) === parseInt(prescription.pet_id)
+    );
+    const recordsWithWeight = petVetRecords.filter((record) => record.weight);
+    
+    if (recordsWithWeight.length === 0) {
+      return null;
+    }
+    
+    return recordsWithWeight[0]; // Ya viene ordenado por fecha descendente
+  };
 
   // Filtrar medicamentos de esta prescripción
   const medications = prescriptionMedications.filter(
@@ -176,7 +191,18 @@ export default function GeneratePrescriptionPDF({ prescription }) {
         pdf.text("Teléfono:", columnX, tutorY);
         pdf.setFont("helvetica", "normal");
         pdf.text(owner.phone, columnX + pdf.getTextWidth("Teléfono:   "), tutorY);
+        tutorY += 5;
       }
+
+      // Agregar último peso - siempre mostrar
+      const lastWeight = getLastWeight();
+      pdf.setFont("helvetica", "bold");
+      pdf.text("Último Peso:", columnX, tutorY);
+      pdf.setFont("helvetica", "normal");
+      const weightText = lastWeight 
+        ? `${lastWeight.weight} kg (${formatDate(lastWeight.event_date)})` 
+        : "Sin registros";
+      pdf.text(weightText, columnX + pdf.getTextWidth("Último Peso:   "), tutorY);
     }
 
     yPosition += 7;

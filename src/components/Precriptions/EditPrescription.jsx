@@ -230,17 +230,18 @@ export default function EditPrescription({ prescription }) {
           setIsLoading(false);
           return;
         }
-
+        console.log(formData);
         for (const med of medications) {
-          if (!med.medication_name || !med.dosage || !med.duration || !med.administration_route) {
+          if (!med.medication_name?.trim() || !med.dosage?.trim() || !med.duration?.trim() || med.administration_route === "" || med.administration_route === null || med.administration_route === undefined) {
             setErrorMessage("Complete todos los campos obligatorios de los medicamentos");
             setShowError(true);
             setIsLoading(false);
             return;
           }
+          console.log(med)
         }
       }
-
+      
       const formDataToSubmit = {
         ...formData,
         updated_at: currentDateTime,
@@ -265,7 +266,7 @@ export default function EditPrescription({ prescription }) {
             administration_route: med.administration_route,
             instructions: med.instructions || "",
           };
-
+          console.log(medicationData)
           if (med.isNew) {
             await dispatch(PostPrescriptionMedication(medicationData));
           } else {
