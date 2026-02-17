@@ -131,7 +131,7 @@ export default function AddVetRecord() {
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="consultation_reason">
               <Form.Label>
-                <FaStethoscope /> Motivo de Consulta
+                <FaStethoscope /> Tipo de consulta
               </Form.Label>
               <Form.Control
                 type="text"
@@ -147,7 +147,7 @@ export default function AddVetRecord() {
 
             <Form.Group controlId="anamnesis">
               <Form.Label>
-                <FaNotesMedical /> Anamnesis (Opcional)
+                <FaNotesMedical /> Detalle de consulta (Opcional)
               </Form.Label>
               <Form.Control
                 as="textarea"

@@ -29,7 +29,7 @@ export default function PetMedicalDocumentsSection({ petId }) {
   const dispatch = useDispatch();
   const authenticatedUser = useSelector((state) => state.authenticatedUser);
   const petMedicalDocuments = useSelector(selectPetMedicalDocumentsByDate);
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     dispatch(GetPetMedicalDocuments());

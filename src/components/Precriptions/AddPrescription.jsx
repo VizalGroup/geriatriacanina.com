@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Button, Alert, Modal, Spinner, OverlayTrigger, Tooltip } from "react-bootstrap";
-import { getCurrentDateTime, capitalizeName, normalizeText, getTodayDate } from "../../utils";
-import { PostPrescription, PostPrescriptionMedication, GetPrescriptions, GetPrescriptionMedications, GetPets } from "../../redux/actions";
+import { getCurrentDateTime, capitalizeName, normalizeText, getTodayDate, formatDate } from "../../utils";
+import { PostPrescription, PostPrescriptionMedication, GetPrescriptions, GetPrescriptionMedications} from "../../redux/actions";
+import { selectPetWeights } from "../../redux/selectors/selectors";
 import {
   FaPlus,
   FaPaw,
@@ -24,6 +25,7 @@ import {
   FaHeartbeat,
   FaVial,
   FaMicroscope,
+  FaWeight,
 } from "react-icons/fa";
 
 
@@ -55,7 +57,7 @@ export default function AddPrescription() {
   const dispatch = useDispatch();
   const pets = useSelector((state) => state.pets);
   const authenticatedUser = useSelector((state) => state.authenticatedUser);
-  
+  const petWeights = useSelector(selectPetWeights);
   const [formData, setFormData] = useState(prescriptionFormData);
   const [medications, setMedications] = useState([]);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -70,10 +72,7 @@ export default function AddPrescription() {
   const [filteredPets, setFilteredPets] = useState([]);
   const dropdownRef = useRef(null);
 
-  // Cargar mascotas al montar el componente
-  useEffect(() => {
-    dispatch(GetPets());
-  }, [dispatch]);
+  
 
   // Memoizar las mascotas aprobadas para evitar recálculos innecesarios
   const approvedPets = useMemo(() => {
@@ -390,9 +389,19 @@ export default function AddPrescription() {
                         <div style={{ fontWeight: "500" }}>
                           {capitalizeName(pet.pet_name)}
                         </div>
-                        <small style={{ color: "#6c757d" }}>
+                        <small style={{ color: "#6c757d", display: "block" }}>
                           Tutor/a: {capitalizeName(pet.owner?.first_name)}{" "}
                           {capitalizeName(pet.owner?.lastname)}
+                        </small>
+                        <small style={{ color: "#2858BF", fontWeight: "500", display: "flex", alignItems: "center", gap: "5px", marginTop: "3px" }}>
+                          <FaWeight size={12} />
+                          {petWeights[pet.id] ? (
+                            <>
+                              Últ Peso: {petWeights[pet.id].weight} kg ({formatDate(petWeights[pet.id].date.split(" ")[0])})
+                            </>
+                          ) : (
+                            "Sin registro"
+                          )}
                         </small>
                       </div>
                     </div>

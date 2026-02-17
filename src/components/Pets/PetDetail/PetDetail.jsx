@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { GetPetDetail, GetVetRecords, GetUsers, GetPrescriptionMedications } from "../../../redux/actions";
 import NavBar from "../../NavBar";
 import BackButton from "../../BackButton";
-import { Card, Row, Col, Button, Modal } from "react-bootstrap";
+import { Card, Row, Col, Button, Modal, Collapse } from "react-bootstrap";
 import {
   FaPaw,
   FaDog,
@@ -18,6 +18,8 @@ import {
   FaFileMedical,
   FaArrowLeft,
   FaWeight,
+  FaChevronDown,
+  FaChevronUp,
 } from "react-icons/fa";
 import { FaScissors } from "react-icons/fa6";
 import {
@@ -45,6 +47,7 @@ export default function PetDetail() {
   console.log(vetRecords);
   
   const [showImageModal, setShowImageModal] = useState(false);
+  const [isVetRecordsOpen, setIsVetRecordsOpen] = useState(false);
 
   useEffect(() => {
     if (!authenticatedUser) {
@@ -352,21 +355,6 @@ export default function PetDetail() {
                         >
                           {formatDate(petDetail.castration_date)}
                         </p>
-                        <p
-                          style={{
-                            fontSize: "0.9rem",
-                            color: "#666",
-                            fontStyle: "italic",
-                            marginBottom: "0",
-                          }}
-                        >
-                          (
-                          {calculateAgeAtDate(
-                            petDetail.birth_date,
-                            petDetail.castration_date
-                          )}
-                          )
-                        </p>
                       </div>
                     ) : (
                       <p
@@ -454,25 +442,42 @@ export default function PetDetail() {
               </Card.Body>
             </Card>
 
+            {/* Historial clínico - Solo visible para administradores/veterinarios */}
+            {!isClient(authenticatedUser?.user_role) && (
+              <Card className="shadow mb-4" style={{ borderRadius: "15px" }}>
+                <Card.Header
+                  style={{
+                    backgroundColor: "#f8f9fa",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => setIsVetRecordsOpen(!isVetRecordsOpen)}
+                >
+                  <h5 style={{ margin: "0", color: "#103585" }}>
+                    <FaFileMedical /> Historial Clínico ({petVetRecords.length})
+                  </h5>
+                  <Button
+                    variant="link"
+                    style={{ color: "#103585", textDecoration: "none", padding: "0" }}
+                  >
+                    {isVetRecordsOpen ? <FaChevronUp size={20} /> : <FaChevronDown size={20} />}
+                  </Button>
+                </Card.Header>
+                <Collapse in={isVetRecordsOpen}>
+                  <Card.Body>
+                    <VetRecordsTimeline vetRecords={petVetRecords} />
+                  </Card.Body>
+                </Collapse>
+              </Card>
+            )}
+
             {/* Documentos Médicos */}
             <PetMedicalDocumentsSection petId={id} />
 
             {/* Indicaciones Médicas */}
             <PetPrescriptionsSection petId={id} />
-
-            {/* Historial clínico - Solo visible para administradores/veterinarios */}
-            {!isClient(authenticatedUser?.user_role) && (
-              <Card className="shadow mb-4" style={{ borderRadius: "15px" }}>
-                <Card.Header style={{ backgroundColor: "#f8f9fa" }}>
-                  <h5 style={{ margin: "0", color: "#103585" }}>
-                    <FaFileMedical /> Historial Clínico ({petVetRecords.length})
-                  </h5>
-                </Card.Header>
-                <Card.Body>
-                  <VetRecordsTimeline vetRecords={petVetRecords} />
-                </Card.Body>
-              </Card>
-            )}
           </Col>
         </Row>
       </div>

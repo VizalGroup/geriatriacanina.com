@@ -219,6 +219,7 @@ export default function EditUser({ user }) {
                 required
               >
                 <option value={1}>Activo</option>
+                <option value={2}>Pendiente de validar</option>
                 <option value={0}>Inactivo</option>
               </Form.Control>
             </Form.Group>

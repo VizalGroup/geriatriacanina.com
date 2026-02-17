@@ -8,30 +8,80 @@ import {
   FaWhatsapp,
   FaCalendarPlus,
   FaEdit as FaCalendarEdit,
+  FaPaw,
+  FaExclamationTriangle,
+  FaFilter,
+  FaClock,
 } from "react-icons/fa";
 import { RiUserSettingsLine } from "react-icons/ri";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import Pagination from "../Pagination";
 import { getUserRoleName, formatDateTime, capitalizeName } from "../../utils";
 import EditUser from "./EditUser";
 import RemoveUser from "./RemoveUser";
+import UserPetsModal from "./UserPetsModal";
 
 export default function UsersTable({ users }) {
+  const navigate = useNavigate();
+  const pets = useSelector((state) => state.pets);
   const [currentPage, setCurrentPage] = useState(1);
+  const [showPetsModal, setShowPetsModal] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState(null);
+  const [filterPending, setFilterPending] = useState(false);
   const itemsPerPage = 10;
+
+  // Filtrar usuarios según el estado de filtro
+  const filteredUsers = filterPending
+    ? users.filter((user) => user.is_activate === 2)
+    : users;
+
+  // Contar usuarios pendientes de validar
+  const pendingValidationCount = users.filter(
+    (user) => user.is_activate === 2
+  ).length;
+
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const totalPages = Math.ceil(users.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
 
-  // Resetear a página 1 cuando cambien los usuarios (búsqueda)
+  // Resetear a página 1 cuando cambien los usuarios (búsqueda) o el filtro
   useEffect(() => {
     setCurrentPage(1);
-  }, [users.length]);
+  }, [filteredUsers.length]);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
-  const currentItems = users.slice(indexOfFirstItem, indexOfLastItem);
+  const handleFilterToggle = () => {
+    setFilterPending(!filterPending);
+    setCurrentPage(1);
+  };
+  //IMPORTANTE: Este método maneja la lógica para mostrar las mascotas del usuario. 
+  // Si el usuario tiene una sola mascota, redirige directamente a su perfil. 
+  // Si tiene múltiples mascotas, muestra un modal con la lista de ellas para seleccionar la correcta.
+  const handleViewPets = (userId) => {
+    const userPets = pets.filter((pet) => parseInt(pet.owner_id) === parseInt(userId));
+
+    if (userPets.length === 0) {
+      alert("Este usuario no tiene mascotas registradas.");
+      return;
+    }
+
+    if (userPets.length === 1) {
+      // Si tiene una sola mascota, ir directamente
+      window.scrollTo(0, 0);
+      navigate(`/inicio/mascotas/${userPets[0].id}`);
+      return;
+    }
+
+    // Si tiene múltiples, mostrar modal
+    setSelectedUserId(userId);
+    setShowPetsModal(true);
+  };
+
+  const currentItems = filteredUsers.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
     <div
@@ -42,6 +92,28 @@ export default function UsersTable({ users }) {
         borderRadius: "20px",
       }}
     >
+      <div className="pet-pending-status">
+        <Button
+          variant={filterPending ? "secondary" : "outline-secondary"}
+          onClick={handleFilterToggle}
+        >
+          {filterPending ? "Ver Todos" : "Pendientes por Validar"}
+          {pendingValidationCount > 0 && (
+            <>
+              <FaClock style={{ marginLeft: "5px" }} />
+              <span
+                style={{
+                  fontSize: "0.85rem",
+                  marginLeft: "5px",
+                }}
+              >
+                {pendingValidationCount}
+              </span>
+            </>
+          )}
+        </Button>
+      </div>
+
       {totalPages > 1 && (
         <Pagination
           currentPage={currentPage}
@@ -50,9 +122,13 @@ export default function UsersTable({ users }) {
         />
       )}
 
-      {users.length === 0 ? (
+      {filteredUsers.length === 0 ? (
         <div className="text-center p-4">
-          <p>No hay usuarios que coincidan con la búsqueda.</p>
+          <p>
+            {filterPending
+              ? "No hay usuarios pendientes de validar."
+              : "No hay usuarios que coincidan con la búsqueda."}
+          </p>
         </div>
       ) : (
         <Table
@@ -126,14 +202,36 @@ export default function UsersTable({ users }) {
                       fontSize: "0.85rem",
                       fontWeight: "600",
                       backgroundColor:
-                        user.is_activate == 1 ? "#d4edda" : "#f8d7da",
-                      color: user.is_activate == 1 ? "#155724" : "#721c24",
+                        user.is_activate == 1
+                          ? "#d4edda"
+                          : user.is_activate == 2
+                            ? "#fff3cd"
+                            : "#f8d7da",
+                      color:
+                        user.is_activate == 1
+                          ? "#155724"
+                          : user.is_activate == 2
+                            ? "#856404"
+                            : "#721c24",
                     }}
                   >
-                    {user.is_activate == 1 ? "Activo" : "Inactivo"}
+                    {user.is_activate == 1
+                      ? "Activo"
+                      : user.is_activate == 2
+                        ? "Pendiente de validar"
+                        : "Inactivo"}
                   </span>
                 </td>
                 <td>
+                  <Button
+                    variant="info"
+                    size="sm"
+                    onClick={() => handleViewPets(user.id)}
+                    style={{ margin: "2px" }}
+                    title="Perfil de Mascota"
+                  >
+                    <FaPaw />
+                  </Button>
                   {user.phone && (
                     <a
                       href={`https://wa.me/549${user.phone}`}
@@ -154,6 +252,11 @@ export default function UsersTable({ users }) {
           </tbody>
         </Table>
       )}
+      <UserPetsModal
+        show={showPetsModal}
+        onHide={() => setShowPetsModal(false)}
+        userId={selectedUserId}
+      />
     </div>
   );
 }

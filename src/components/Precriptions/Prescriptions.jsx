@@ -4,6 +4,7 @@ import {
   GetPets,
   GetPrescriptionMedications,
   GetPrescriptions,
+  GetVetRecords,
 } from "../../redux/actions";
 import NavBar from "../NavBar";
 import AddPrescription from "./AddPrescription";
@@ -24,6 +25,7 @@ export default function Prescriptions() {
     dispatch(GetPrescriptions());
     dispatch(GetPrescriptionMedications());
     dispatch(GetPets());
+    dispatch(GetVetRecords());
   }, [dispatch]);
 
   // Filtrar indicaciones según el término de búsqueda

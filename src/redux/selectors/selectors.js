@@ -78,3 +78,24 @@ export const selectPrescriptions = (state) => state.prescriptions;
 export const selectSortedPrescriptions = createSelector([selectPrescriptions], (prescriptions) => {
   return [...prescriptions].sort((a, b) => b.id - a.id);
 });
+
+// Selector para obtener el último peso de cada mascota (memoizado para eficiencia)
+export const selectPetWeights = createSelector(
+  [selectVetRecordsByDate],
+  (vetRecords) => {
+    const petWeights = {};
+    
+    // Crear diccionario { petId: { weight, date } }
+    // Solo guarda el primer registro (más reciente) de cada mascota
+    vetRecords.forEach((record) => {
+      if (record.weight && !petWeights[record.pet_id]) {
+        petWeights[record.pet_id] = {
+          weight: record.weight,
+          date: record.event_date,
+        };
+      }
+    });
+    
+    return petWeights;
+  }
+);

@@ -27,12 +27,12 @@ const userFormData = {
   email: "",
   clue: "",
   phone: "",
-  is_activate: 1, // Por defecto ACTIVO
+  is_activate: 2, // Por defecto pendiente de activar.
   street_name: "",
   street_number: "",
   city: "",
   province: "",
-  country: "", // Por defecto Argentina
+  country: "", 
   created_at: "",
   updated_at: "",
 };

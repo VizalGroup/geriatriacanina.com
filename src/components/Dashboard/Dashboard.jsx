@@ -10,9 +10,10 @@ import {
   FaPaw,
   FaPrescriptionBottleAlt,
   FaStickyNote,
+  FaExclamationTriangle,
 } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
-import { GetPets, GetUserDetail, LogoutUser } from "../../redux/actions";
+import { GetPets, GetUserDetail, LogoutUser, GetUsers } from "../../redux/actions";
 import {
   getSessionTimeRemaining,
   isClient,
@@ -29,7 +30,13 @@ export default function Dashboard() {
 
   const userDetail = useSelector((state) => state.userDetail);
   const pets = useSelector((state) => state.pets);
+  const users = useSelector((state) => state.users);
   const [timeRemaining, setTimeRemaining] = useState("");
+
+  // Contar usuarios pendientes por validar (is_activate=2)
+  const pendingValidationCount = users.filter(
+    (user) => user.is_activate === 2
+  ).length;
 
   // Filtrar mascotas aprobadas del cliente autenticado
   const approvedClientPets = pets.filter(
@@ -56,6 +63,7 @@ export default function Dashboard() {
     if (authenticatedUser.id) {
       dispatch(GetUserDetail(authenticatedUser.id));
       dispatch(GetPets());
+      dispatch(GetUsers());
     }
   }, [authenticatedUser, dispatch, navigate]);
 
@@ -111,6 +119,8 @@ export default function Dashboard() {
           path: "/inicio/usuarios",
           icon: FaUserCog,
           text: "Usuarios",
+          hasPending: pendingValidationCount > 0,
+          pendingCount: pendingValidationCount,
         },
         {
           key: "systemNotes",
@@ -212,10 +222,32 @@ export default function Dashboard() {
                     <button
                       className={`btn ${getButtonColor(
                         index
-                      )} btn-lg admin-button`}
+                      )} btn-lg admin-button ${
+                        module.hasPending ? "btn-blinking" : ""
+                      }`}
                     >
                       <IconComponent />
-                      <span> {module.text} </span>
+                      <span>
+                        {module.text}
+                        {module.hasPending && (
+                          <span
+                            style={{
+                              marginLeft: "10px",
+                              display: "inline-flex",
+                              alignItems: "center",
+                              gap: "5px",
+                            }}
+                          >
+                            <FaExclamationTriangle
+                              style={{
+                                animation: "blink-icon 1s ease-in-out infinite",
+                                color: "#FFC107",
+                              }}
+                            />
+                            <strong>({module.pendingCount})</strong>
+                          </span>
+                        )}
+                      </span>
                     </button>
                   </Link>
                 </div>

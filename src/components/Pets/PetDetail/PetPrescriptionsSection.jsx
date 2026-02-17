@@ -22,7 +22,7 @@ export default function PetPrescriptionsSection({ petId }) {
   const prescriptions = useSelector(selectSortedPrescriptions);
   console.log(prescriptions);
   
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     dispatch(GetPrescriptions());

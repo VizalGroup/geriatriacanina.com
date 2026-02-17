@@ -8,9 +8,8 @@ import { FaCalendarPlus, FaEdit as FaCalendarEdit, FaUser } from "react-icons/fa
 import { Table } from "react-bootstrap";
 import { useSelector } from "react-redux";
 
+
 export default function PrescriptionsTable({ prescriptions }) {
-  console.log(prescriptions);
-  
   const pets = useSelector((state) => state.pets);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -31,7 +30,7 @@ export default function PrescriptionsTable({ prescriptions }) {
 
   return (
     <div
-     style={{
+      style={{
         marginBottom: "12vh",
         backgroundColor: "#ffffffa9",
         padding: "20px",
@@ -51,23 +50,23 @@ export default function PrescriptionsTable({ prescriptions }) {
           <p>No hay indicaciones que coincidan con la búsqueda.</p>
         </div>
       ) : (
-         <Table striped bordered hover responsive style={{ textAlign: "center" }}>
-            <thead>
-              <tr>
-                <th>Solicitó</th>
-                <th>Mascota y Tutor/a</th>
-                <th>Título / Tipo</th>
-                <th>Notas Internas</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentItems.map((prescription) => {
-                // Buscar el owner desde pets
-                const pet = pets.find(p => p.id === prescription.pet_id);
-                const owner = pet?.owner;
-                
-                return (
+        <Table striped bordered hover responsive style={{ textAlign: "center" }}>
+          <thead>
+            <tr>
+              <th>Solicitó</th>
+              <th>Mascota y Tutor/a</th>
+              <th>Título / Tipo</th>
+              <th>Notas Internas</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentItems.map((prescription) => {
+              // Buscar el owner desde pets
+              const pet = pets.find(p => p.id === prescription.pet_id);
+              const owner = pet?.owner;
+
+              return (
                 <tr key={prescription.id}>
                   {/* Columna Solicitó */}
                   <td>
@@ -162,9 +161,10 @@ export default function PrescriptionsTable({ prescriptions }) {
                     <RemovePrescription prescription={prescription} />
                   </td>
                 </tr>
-              )})}
-            </tbody>
-          </Table>
+              )
+            })}
+          </tbody>
+        </Table>
       )}
 
       {totalPages > 1 && (

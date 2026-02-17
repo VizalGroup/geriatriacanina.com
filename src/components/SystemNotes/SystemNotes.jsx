@@ -26,6 +26,32 @@ export default function SystemNotes() {
             <h2 className="system-notes-title">Registro de Actualizaciones</h2>
             <ul className="notes-timeline">
               <li className="timeline-item">
+                <span className="timeline-date">17 de Febrero de 2026</span>
+                <ul className="timeline-updates">
+                  <li className="update-item">
+                    Visualización del peso del paciente al momento de crear indicaciones médicas
+                  </li>
+                  <li className="update-item">
+                    Posibilidad de visualizar y abrir el perfil de mascotas directamente desde la tabla de usuarios
+                  </li>
+                  <li className="update-item">
+                    Alerta en el panel de administración para usuarios pendientes de validación
+                  </li>
+                  <li className="update-item">
+                    Ocultamiento de la edad de castración en el perfil del paciente
+                  </li>
+                  <li className="update-item">
+                    Reordenamiento de secciones: evolución clínica se muestra antes que informes e indicaciones
+                  </li>
+                  <li className="update-item">
+                    Cambio de etiqueta "Motivo de Consulta" por "Tipo de Consulta"
+                  </li>
+                  <li className="update-item">
+                    Cambio de etiqueta "Anamnesis" por "Detalle de Consulta"
+                  </li>
+                </ul>
+              </li>
+              <li className="timeline-item">
                 <span className="timeline-date">27 de Enero de 2026</span>
                 <ul className="timeline-updates">
                   <li className="update-item">

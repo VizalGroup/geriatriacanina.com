@@ -604,6 +604,15 @@ Georama bold y georama regular
   }
 }
 
+@keyframes blink-icon {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
 /* Estilos para el scrollbar del dropdown de búsqueda de usuarios */
 div[style*="maxHeight: 200px"]::-webkit-scrollbar {
   width: 8px;
