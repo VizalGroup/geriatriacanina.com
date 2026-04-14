@@ -19,9 +19,7 @@ import GeneratePrescriptionPDF from "../../Precriptions/GeneratePrescriptionPDF"
 
 export default function PetPrescriptionsSection({ petId }) {
   const dispatch = useDispatch();
-  const prescriptions = useSelector(selectSortedPrescriptions);
-  console.log(prescriptions);
-  
+  const prescriptions = useSelector(selectSortedPrescriptions);  
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {

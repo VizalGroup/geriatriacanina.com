@@ -1,5 +1,6 @@
-import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
-import { FaFilePdf } from "react-icons/fa";
+import { Button, OverlayTrigger, Tooltip, Modal } from "react-bootstrap";
+import { useState } from "react";
+import { FaFilePdf, FaEye, FaDownload } from "react-icons/fa";
 import jsPDF from "jspdf";
 import {
   formatDate,
@@ -13,6 +14,7 @@ import logoVeterinaria from "../../assets/pictures/Logo_white_background.jpg"; /
 import { useSelector } from "react-redux";
 
 export default function GeneratePrescriptionPDF({ prescription }) {
+  const [showModal, setShowModal] = useState(false);
   const pets = useSelector((state) => state.pets);
   const prescriptionMedications = useSelector(
     (state) => state.prescriptionMedications
@@ -47,7 +49,7 @@ export default function GeneratePrescriptionPDF({ prescription }) {
     return null;
   }
 
-  const generatePDF = async () => {
+  const generatePDF = async (action = 'download') => {
     const pdf = new jsPDF("p", "mm", "a4");
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
@@ -482,11 +484,21 @@ export default function GeneratePrescriptionPDF({ prescription }) {
       yPosition += 5;
       pdf.text("Córdoba, Argentina", textX, yPosition, { align: "right" });
 
-      // Guardar el PDF
+      // Guardar o visualizar el PDF según la acción
       const fileName = `Indicacion_${prescription.id}_${
         prescription.pet?.pet_name || "Mascota"
       }_${formatDate(dateOnly).replace(/\//g, "-")}.pdf`;
-      pdf.save(fileName);
+      
+      if (action === 'view') {
+        // Abrir en nueva pestaña
+        const pdfUrl = pdf.output('bloburl');
+        window.open(pdfUrl, '_blank');
+      } else {
+        // Descargar
+        pdf.save(fileName);
+      }
+      
+      setShowModal(false);
     };
 
     img.onerror = function () {
@@ -515,7 +527,17 @@ export default function GeneratePrescriptionPDF({ prescription }) {
       const fileName = `Indicacion_${prescription.id}_${
         prescription.pet?.pet_name || "Mascota"
       }_${formatDate(dateOnly).replace(/\//g, "-")}.pdf`;
-      pdf.save(fileName);
+      
+      if (action === 'view') {
+        // Abrir en nueva pestaña
+        const pdfUrl = pdf.output('bloburl');
+        window.open(pdfUrl, '_blank');
+      } else {
+        // Descargar
+        pdf.save(fileName);
+      }
+      
+      setShowModal(false);
     };
 
     // Cargar la imagen
@@ -523,20 +545,47 @@ export default function GeneratePrescriptionPDF({ prescription }) {
   };
 
   return (
-    <OverlayTrigger
-      placement="top"
-      overlay={
-        <Tooltip id={`tooltip-pdf-${prescription.id}`}>Generar PDF</Tooltip>
-      }
-    >
-      <Button
-        className="button"
-        variant="danger"
-        onClick={generatePDF}
-        style={{ marginRight: "2px" }}
+    <>
+      <OverlayTrigger
+        placement="top"
+        overlay={
+          <Tooltip id={`tooltip-pdf-${prescription.id}`}>Generar PDF</Tooltip>
+        }
       >
-        <FaFilePdf />
-      </Button>
-    </OverlayTrigger>
+        <Button
+          className="button"
+          variant="danger"
+          onClick={() => setShowModal(true)}
+          style={{ marginRight: "2px" }}
+        >
+          <FaFilePdf />
+        </Button>
+      </OverlayTrigger>
+
+      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Opciones de PDF</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>¿Qué deseas hacer con la indicación?</p>
+          <div style={{ display: "flex", gap: "10px", justifyContent: "center", marginTop: "20px" }}>
+            <Button
+              variant="primary"
+              onClick={() => generatePDF('view')}
+              style={{ display: "flex", alignItems: "center", gap: "8px" }}
+            >
+              <FaEye /> Visualizar
+            </Button>
+            <Button
+              variant="danger"
+              onClick={() => generatePDF('download')}
+              style={{ display: "flex", alignItems: "center", gap: "8px" }}
+            >
+              <FaDownload /> Descargar
+            </Button>
+          </div>
+        </Modal.Body>
+      </Modal>
+    </>
   );
 }

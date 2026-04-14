@@ -20,6 +20,8 @@ export default function Pets() {
   const [showPendingOnly, setShowPendingOnly] = useState(false);
   const authenticatedUser = useSelector((state) => state.authenticatedUser);
   const pets = useSelector(selectSortedPets);
+  console.log(pets);
+  
 
   useEffect(() => {
     // Verificar autenticación

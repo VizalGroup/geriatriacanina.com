@@ -7,7 +7,6 @@ import {
   FaFlask,
   FaXRay,
   FaHeartbeat,
-  FaBrain,
   FaFileInvoice,
   FaChevronDown,
   FaChevronUp,
@@ -18,6 +17,10 @@ import {
   FaMagnet,
   FaCamera,
   FaExclamationCircle,
+  FaClipboardList,
+  FaChartLine,
+  FaImage,
+  FaFileMedical,
 } from "react-icons/fa";
 import { GiMicroscope } from "react-icons/gi";
 import { getPetMedicalDocumentType, formatDate, formatDateTime, isClient } from "../../../utils";
@@ -53,13 +56,17 @@ export default function PetMedicalDocumentsSection({ petId }) {
   // Función para obtener el icono según el tipo
   const getIconByType = (type) => {
     const icons = {
-      0: <FaFlask color="#2858BF" size={20} />, // Análisis
-      1: <FaHeartbeat color="#2858BF" size={20} />, // Ecografías
-      2: <FaXRay color="#2858BF" size={20} />, // Radiografías
-      3: <GiMicroscope color="#2858BF" size={20} />, // Endoscopías
-      4: <FaMagnet color="#2858BF" size={20} />, // RM (Resonancia Magnética)
-      5: <FaCamera color="#2858BF" size={20} />, // TAC
-      6: <FaFileInvoice color="#2858BF" size={20} />, // Otros informes
+      0: <FaFlask color="#2858BF" size={20} />,          // Análisis
+      1: <FaHeartbeat color="#2858BF" size={20} />,       // Ecografías
+      2: <FaXRay color="#2858BF" size={20} />,            // Radiografías
+      3: <GiMicroscope color="#2858BF" size={20} />,      // Endoscopías
+      4: <FaMagnet color="#2858BF" size={20} />,          // RM
+      5: <FaCamera color="#2858BF" size={20} />,          // TAC
+      6: <FaFileInvoice color="#2858BF" size={20} />,     // Otros
+      7: <FaClipboardList color="#2858BF" size={20} />,   // Cuestionario
+      8: <FaChartLine color="#2858BF" size={20} />,       // Electrocardiograma
+      9: <FaImage color="#2858BF" size={20} />,           // Fotos
+      10: <FaFileMedical color="#2858BF" size={20} />,    // Informe médico
     };
     return icons[type] || <FaFileAlt color="#2858BF" size={20} />;
   };
@@ -94,7 +101,12 @@ export default function PetMedicalDocumentsSection({ petId }) {
             </p>
           ) : (
             Object.keys(groupedDocuments)
-              .sort((a, b) => parseInt(a) - parseInt(b))
+              .sort((a, b) =>
+                getPetMedicalDocumentType(parseInt(a)).localeCompare(
+                  getPetMedicalDocumentType(parseInt(b)),
+                  "es"
+                )
+              )
               .map((type) => (
                 <div key={type} style={{ marginBottom: "30px" }}>
                   <div

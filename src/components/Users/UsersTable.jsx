@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Table } from "react-bootstrap";
+import { Button, Table } from "react-bootstrap";
 import {
   FaUser,
   FaEnvelope,
@@ -9,8 +9,6 @@ import {
   FaCalendarPlus,
   FaEdit as FaCalendarEdit,
   FaPaw,
-  FaExclamationTriangle,
-  FaFilter,
   FaClock,
 } from "react-icons/fa";
 import { RiUserSettingsLine } from "react-icons/ri";
@@ -223,15 +221,41 @@ export default function UsersTable({ users }) {
                   </span>
                 </td>
                 <td>
-                  <Button
-                    variant="info"
-                    size="sm"
-                    onClick={() => handleViewPets(user.id)}
-                    style={{ margin: "2px" }}
-                    title="Perfil de Mascota"
-                  >
-                    <FaPaw />
-                  </Button>
+                  {(() => {
+                    const userPetsCount = pets.filter(
+                      (pet) => parseInt(pet.owner_id) === parseInt(user.id)
+                    ).length;
+
+                    return userPetsCount > 0 ? (
+                      <Button
+                        variant="info"
+                        size="sm"
+                        onClick={() => handleViewPets(user.id)}
+                        style={{ margin: "2px", position: "relative" }}
+                        title="Perfil de Mascota"
+                      >
+                        <FaPaw />
+                        {userPetsCount > 1 && (
+                          <span
+                            style={{
+                              position: "absolute",
+                              top: "-8px",
+                              right: "-8px",
+                              backgroundColor: "#dc3545",
+                              color: "white",
+                              borderRadius: "50%",
+                              padding: "2px 6px",
+                              fontSize: "0.7rem",
+                              fontWeight: "bold",
+                              border: "2px solid white",
+                            }}
+                          >
+                            {userPetsCount}
+                          </span>
+                        )}
+                      </Button>
+                    ) : null;
+                  })()}
                   {user.phone && (
                     <a
                       href={`https://wa.me/549${user.phone}`}

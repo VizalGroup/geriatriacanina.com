@@ -26,6 +26,42 @@ export default function SystemNotes() {
             <h2 className="system-notes-title">Registro de Actualizaciones</h2>
             <ul className="notes-timeline">
               <li className="timeline-item">
+                <span className="timeline-date">13 de Abril de 2026</span>
+                <ul className="timeline-updates">
+                  <li className="update-item">
+                    Visualización del peso del paciente al final del label de selección de mascota en el formulario de indicaciones médicas
+                  </li>
+                  <li className="update-item">
+                    Mejora en el selector de mascota del formulario de indicaciones médicas: al seleccionar una mascota se reemplaza el buscador por una tarjeta con el nombre, tutor/a, peso y botón para cambiar la selección
+                  </li>
+                  <li className="update-item">
+                    Nuevos tipos de documentos médicos: Cuestionario, Electrocardiograma, Fotos e Informe médico. Renombrado "Otros informes" a "Otros". Las secciones de documentos ahora se ordenan alfabéticamente
+                  </li>
+                  <li className="update-item">
+                    Indicador visual de mascota fallecida: cuando current_state es 2, el encabezado de las cards y la vista de detalle cambia de azul a gris oscuro, se muestra la etiqueta "Fallecido/a" y se agrega la opción correspondiente al selector de estado en el formulario de edición
+                  </li>
+                </ul>
+              </li>
+              <li className="timeline-item">
+                <span className="timeline-date">13 de Marzo de 2026</span>
+                <ul className="timeline-updates">
+                  <li className="update-item">
+                    Reconfiguración del script de Google Drive para la subida de archivos. Se desconoce la causa exacta del error que interrumpió el funcionamiento, pero tras reconfigurar el deployment del script el servicio volvió a operar con normalidad
+                  </li>
+                </ul>
+              </li>
+              <li className="timeline-item">
+                <span className="timeline-date">6 de Marzo de 2026</span>
+                <ul className="timeline-updates">
+                  <li className="update-item">
+                    Implementación de modal con opciones al generar PDFs de indicaciones médicas: ahora se puede elegir entre previsualizar en una nueva pestaña o descargar el documento directamente
+                  </li>
+                  <li className="update-item">
+                    Corrección del botón de acceso a mascotas en tabla de usuarios: ahora solo se muestra cuando el usuario tiene mascotas vinculadas y muestra un badge con la cantidad si tiene más de una
+                  </li>
+                </ul>
+              </li>
+              <li className="timeline-item">
                 <span className="timeline-date">17 de Febrero de 2026</span>
                 <ul className="timeline-updates">
                   <li className="update-item">

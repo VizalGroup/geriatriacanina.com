@@ -308,33 +308,82 @@ export default function AddPrescription() {
                 <Form.Label>
                   <FaPaw /> Mascota *
                 </Form.Label>
-                <div style={{ position: "relative" }}>
-                  <Form.Control
-                    type="text"
-                    value={searchTerm}
-                    onChange={handlePetSearchChange}
-                    onFocus={handlePetSearchFocus}
-                    placeholder="Buscar mascota por nombre o tutor..."
-                    style={{ paddingRight: "35px" }}
-                    required
-                  />
-                  <FaSearch
-                    style={{
-                      position: "absolute",
-                      right: "10px",
-                      top: "50%",
-                      transform: "translateY(-50%)",
-                      color: "#6c757d",
-                      pointerEvents: "none",
-                    }}
-                  />
-                </div>
-                <Form.Text className="text-muted">
-                  Escribe el nombre de la mascota o su tutor/a
-                </Form.Text>
+
+                {!formData.pet_id || !selectedPet ? (
+                  <>
+                    <div style={{ position: "relative" }}>
+                      <Form.Control
+                        type="text"
+                        value={searchTerm}
+                        onChange={handlePetSearchChange}
+                        onFocus={handlePetSearchFocus}
+                        placeholder="Buscar mascota por nombre o tutor..."
+                        style={{ paddingRight: "35px" }}
+                      />
+                      <FaSearch
+                        style={{
+                          position: "absolute",
+                          right: "10px",
+                          top: "50%",
+                          transform: "translateY(-50%)",
+                          color: "#6c757d",
+                          pointerEvents: "none",
+                        }}
+                      />
+                    </div>
+                    <Form.Text className="text-muted">
+                      Escribe el nombre de la mascota o su tutor/a
+                    </Form.Text>
+                  </>
+                ) : (
+                  <div className="p-3 bg-light rounded border">
+                    <div className="d-flex justify-content-between align-items-center">
+                      <div>
+                        <div style={{ fontWeight: "600" }}>
+                          <FaPaw style={{ marginRight: "6px" }} />
+                          {capitalizeName(selectedPet.pet_name)}
+                        </div>
+                        <small style={{ color: "#6c757d", display: "block", marginTop: "2px" }}>
+                          Tutor/a: {capitalizeName(selectedPet.owner?.first_name)}{" "}
+                          {capitalizeName(selectedPet.owner?.lastname)}
+                        </small>
+                        <div style={{
+                          marginTop: "6px",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "5px",
+                          backgroundColor: "#e7f3ff",
+                          border: "1px solid #b6d4fe",
+                          borderRadius: "20px",
+                          padding: "2px 10px",
+                          fontSize: "0.8rem",
+                          color: "#2858BF",
+                          fontWeight: "500",
+                        }}>
+                          <FaWeight size={11} />
+                          {petWeights[selectedPet.id]
+                            ? `Últ. Peso: ${petWeights[selectedPet.id].weight} kg (${formatDate(petWeights[selectedPet.id].date.split(" ")[0])})`
+                            : "Sin registro de peso"}
+                        </div>
+                      </div>
+                      <Button
+                        size="sm"
+                        variant="outline-secondary"
+                        onClick={() => {
+                          setFormData({ ...formData, pet_id: "" });
+                          setSearchTerm("");
+                        }}
+                      >
+                        Cambiar
+                      </Button>
+                    </div>
+                  </div>
+                )}
+
+                <input type="hidden" name="pet_id" value={formData.pet_id} required />
               </Form.Group>
 
-              {showDropdown && searchTerm.trim() !== "" && filteredPets.length > 0 && (
+              {!formData.pet_id && showDropdown && searchTerm.trim() !== "" && filteredPets.length > 0 && (
                 <div
                   style={{
                     position: "absolute",
@@ -358,21 +407,16 @@ export default function AddPrescription() {
                         padding: "10px",
                         cursor: "pointer",
                         borderBottom: "1px solid #f0f0f0",
-                        backgroundColor:
-                          formData.pet_id === pet.id ? "#e7f3ff" : "white",
+                        backgroundColor: "white",
                         display: "flex",
                         alignItems: "center",
                         gap: "10px",
                       }}
                       onMouseEnter={(e) => {
-                        if (formData.pet_id !== pet.id) {
-                          e.currentTarget.style.backgroundColor = "#f8f9fa";
-                        }
+                        e.currentTarget.style.backgroundColor = "#f8f9fa";
                       }}
                       onMouseLeave={(e) => {
-                        if (formData.pet_id !== pet.id) {
-                          e.currentTarget.style.backgroundColor = "white";
-                        }
+                        e.currentTarget.style.backgroundColor = "white";
                       }}
                     >
                       <img
@@ -696,8 +740,24 @@ export default function AddPrescription() {
                     <br />
 
                     <Form.Group controlId={`dosage_${med.id}`}>
-                      <Form.Label>
-                        <FaSyringe /> Dosificación *
+                      <Form.Label style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
+                        <span><FaSyringe /> Dosificación *</span>
+                        {formData.pet_id && petWeights[formData.pet_id] && (
+                          <span style={{
+                            backgroundColor: "#e7f3ff",
+                            border: "1px solid #b6d4fe",
+                            borderRadius: "20px",
+                            padding: "2px 10px",
+                            fontSize: "0.8rem",
+                            color: "#2858BF",
+                            fontWeight: "500",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "5px",
+                          }}>
+                            <FaWeight size={11} /> {petWeights[formData.pet_id].weight} kg
+                          </span>
+                        )}
                       </Form.Label>
                       <Form.Control
                         type="text"

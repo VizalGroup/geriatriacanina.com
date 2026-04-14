@@ -195,7 +195,11 @@ export const getPetMedicalDocumentType = (type) => {
     3: "Endoscopías",
     4: "RM",
     5: "TAC",
-    6: "Otros informes",
+    6: "Otros",
+    7: "Cuestionario",
+    8: "Electrocardiograma",
+    9: "Fotos",
+    10: "Informe médico",
   };
 
   return documentTypes[type] || "No especificado";
@@ -352,7 +356,7 @@ export const canManageSystem = (userRole) => {
 // Función para guardar los archivos en el drive 
 
 export function guardarArchivo(e) {
-  return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
     var file = e.target.files[0];
     var reader = new FileReader();
     reader.readAsDataURL(file);
@@ -363,8 +367,7 @@ export function guardarArchivo(e) {
         fname: "uploadFilesToGoogleDrive",
       };
       fetch(
-        "https://script.google.com/macros/s/AKfycby79TmXX--4B69c51pf7xlqNY6FnUNL0fOQQVI-D7yaFNXjulBVt1q70CHPq2hkRvIgdw/exec",
-        
+        "https://script.google.com/macros/s/AKfycbwPlOuEg100UNCGmwW11TWZg1Oj8Icjsgw0OTg7UQWmLg1lfVqlrFrHaJ8k4cp80pI/exec",
         { method: "POST", body: JSON.stringify(dataSend) }
       )
         .then((res) => res.json())
@@ -373,6 +376,7 @@ export function guardarArchivo(e) {
             resolve(response.url);
           } else {
             reject(new Error("Failed to upload file"));
+            console.log(response);
           }
         })
         .catch((e) => reject(e));

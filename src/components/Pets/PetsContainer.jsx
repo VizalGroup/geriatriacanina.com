@@ -15,6 +15,7 @@ import {
   FaEdit as FaCalendarEdit,
   FaEye,
   FaPrescriptionBottleAlt,
+  FaHeartBroken,
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import Pagination from "../Pagination";
@@ -71,10 +72,13 @@ export default function PetsContainer({ pets }) {
     return !(isValidated && hasMedicalRecords);
   };
 
-  // Función para verificar si está validada
+  // Función para verificar si está validada o fallecida (ambas habilitan los botones)
   const isValidated = (pet) => {
-    return parseInt(pet.current_state) === 1;
+    return parseInt(pet.current_state) === 1 || parseInt(pet.current_state) === 2;
   };
+
+  // Función para verificar si una mascota ha fallecido
+  const isDeceased = (pet) => parseInt(pet.current_state) === 2;
 
   // Función para verificar si una mascota tiene documentos pendientes de aprobar
   const hasPendingDocuments = (petId) => {
@@ -112,7 +116,7 @@ export default function PetsContainer({ pets }) {
                 <div
                   className="pet-card-header"
                   style={{
-                    backgroundColor: "#2858BF",
+                    backgroundColor: isDeceased(pet) ? "#2d2d2d" : "#2858BF",
                     padding: "10px",
                     textAlign: "center",
                   }}
@@ -166,6 +170,22 @@ export default function PetsContainer({ pets }) {
                         }}
                       >
                         Pendiente de validar
+                      </span>
+                    </div>
+                  )}
+
+                  {isDeceased(pet) && (
+                    <div style={{ marginBottom: "8px" }}>
+                      <FaHeartBroken color="#777" />
+                      <span
+                        style={{
+                          color: "#777",
+                          fontSize: "0.85rem",
+                          marginLeft: "5px",
+                          fontStyle: "italic",
+                        }}
+                      >
+                        Fallecido/a
                       </span>
                     </div>
                   )}

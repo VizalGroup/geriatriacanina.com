@@ -111,12 +111,16 @@ export default function EditPetMedicalDocument({ document }) {
                 disabled={isLoading || uploadingFile}
               >
                 <option value="0">Análisis</option>
+                <option value="7">Cuestionario</option>
                 <option value="1">Ecografías</option>
-                <option value="2">Radiografías</option>
+                <option value="8">Electrocardiograma</option>
                 <option value="3">Endoscopías</option>
+                <option value="9">Fotos</option>
+                <option value="10">Informe médico</option>
+                <option value="6">Otros</option>
+                <option value="2">Radiografías</option>
                 <option value="4">RM</option>
                 <option value="5">TAC</option>
-                <option value="6">Otros informes</option>
               </Form.Control>
               <Form.Text className="text-muted">
                 Puede recategorizar el documento si fue clasificado incorrectamente

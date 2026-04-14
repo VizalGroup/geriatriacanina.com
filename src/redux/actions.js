@@ -588,7 +588,6 @@ export const GetPetMedicalDocumentDetail = (id) => {
 };
 
 export const PostPetMedicalDocument = (atributos) => {
-  console.log(atributos);
   return async function (dispatch) {
     try {
       var form = new FormData();

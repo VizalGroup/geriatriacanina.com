@@ -246,6 +246,7 @@ export default function EditPet({ pet, fullWidth = false }) {
               >
                 <option value={0}>Pendiente de validar</option>
                 <option value={1}>Validado</option>
+                <option value={2}>Fallecido/a</option>
               </Form.Control>
               <Form.Text className="text-muted">
                 Cambia a "Validado" para aprobar el registro de la mascota

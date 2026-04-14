@@ -20,6 +20,7 @@ import {
   FaWeight,
   FaChevronDown,
   FaChevronUp,
+  FaHeartBroken,
 } from "react-icons/fa";
 import { FaScissors } from "react-icons/fa6";
 import {
@@ -44,7 +45,6 @@ export default function PetDetail() {
   const authenticatedUser = useSelector((state) => state.authenticatedUser);
   const petDetail = useSelector((state) => state.petDetail);
   const vetRecords = useSelector(selectVetRecordsByDate);
-  console.log(vetRecords);
   
   const [showImageModal, setShowImageModal] = useState(false);
   const [isVetRecordsOpen, setIsVetRecordsOpen] = useState(false);
@@ -127,14 +127,17 @@ export default function PetDetail() {
  // Función para obtener el último peso registrado
   const getLastWeight = () => {
     const recordsWithWeight = petVetRecords.filter((record) => record.weight);
-    console.log(recordsWithWeight);
-    
+  
     if (recordsWithWeight.length === 0) {
       return null;
     }
     
     return recordsWithWeight[0]; // Ya viene ordenado por fecha descendente
   };
+
+  const isDeceased = parseInt(petDetail.current_state) === 2;
+  const themeColor = isDeceased ? "#2d2d2d" : "#2858BF";
+
   return (
     <>
       <NavBar />
@@ -161,11 +164,11 @@ export default function PetDetail() {
             {/* Card principal con foto y datos básicos */}
             <Card
               className="shadow-lg"
-              style={{ borderRadius: "15px", border: "2px solid #2858BF" }}
+              style={{ borderRadius: "15px", border: `2px solid ${themeColor}` }}
             >
               <Card.Header
                 style={{
-                  backgroundColor: "#2858BF",
+                  backgroundColor: themeColor,
                   color: "white",
                   textAlign: "center",
                   padding: "20px",
@@ -185,7 +188,7 @@ export default function PetDetail() {
                       height: "200px",
                       borderRadius: "50%",
                       objectFit: "cover",
-                      border: "5px solid #2858BF",
+                      border: `5px solid ${themeColor}`,
                       marginBottom: "20px",
                       boxShadow: "0 4px 15px rgba(0,0,0,0.2)",
                       cursor: "pointer",
@@ -209,7 +212,7 @@ export default function PetDetail() {
                       alignItems: "center",
                       justifyContent: "center",
                       margin: "0 auto 20px",
-                      border: "5px solid #2858BF",
+                      border: `5px solid ${themeColor}`,
                     }}
                   >
                     <FaPaw color="#ccc" size={80} />
@@ -220,11 +223,30 @@ export default function PetDetail() {
                   style={{
                     color: "#103585",
                     fontWeight: "700",
-                    marginBottom: "20px",
+                    marginBottom: "10px",
                   }}
                 >
                   {petDetail.pet_name}
                 </h2>
+
+                {isDeceased && (
+                  <div style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    backgroundColor: "#e0e0e0",
+                    border: "1px solid #9e9e9e",
+                    borderRadius: "20px",
+                    padding: "3px 12px",
+                    fontSize: "0.85rem",
+                    color: "#4a4a4a",
+                    fontStyle: "italic",
+                    marginBottom: "15px",
+                  }}>
+                    <FaHeartBroken size={13} />
+                    Fallecido/a
+                  </div>
+                )}
 
                 <hr style={{ margin: "20px 0" }} />
 

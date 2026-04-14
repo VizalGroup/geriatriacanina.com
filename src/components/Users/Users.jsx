@@ -4,7 +4,7 @@ import NavBar from "../NavBar";
 import AddUser from "./AddUser";
 import UsersTable from "./UsersTable";
 import { useDispatch, useSelector } from "react-redux";
-import { GetUsers, LogoutUser } from "../../redux/actions";
+import { GetPets, GetUsers, LogoutUser } from "../../redux/actions";
 import BackButton from "../BackButton";
 import { selectSortedUsers } from "../../redux/selectors/selectors";
 import { normalizeText, canManageSystem } from "../../utils";
@@ -54,6 +54,7 @@ export default function Users() {
     }
 
     dispatch(GetUsers());
+    dispatch(GetPets());
   }, [dispatch, authenticatedUser, navigate]);
 
   const filteredUsers = users.filter((user) => {
