@@ -1,10 +1,14 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { FaStethoscope, FaUserMd, FaCalendarAlt, FaWeight, FaNotesMedical, FaClock, FaEdit } from "react-icons/fa";
-import { formatDateTime } from "../../../utils";
+import { formatDateTime, isVeterinarian } from "../../../utils";
 import EditVetRecord from "./EditVetRecord";
 import RemoveVetRecord from "./RemoveVetRecord";
 
 export default function VetRecordsTimeline({ vetRecords }) {
+  const authenticatedUser = useSelector((state) => state.authenticatedUser);
+  // El veterinario solo puede ver la fecha de última actualización de las evoluciones que él mismo creó
+  const isVet = isVeterinarian(authenticatedUser?.user_role);
   const [expandedRecords, setExpandedRecords] = useState(new Set());
 
   const toggleExpand = (recordId) => {
@@ -38,6 +42,9 @@ export default function VetRecordsTimeline({ vetRecords }) {
       {vetRecords.map((record, index) => {
         const isExpanded = expandedRecords.has(record.id);
         const isLast = index === vetRecords.length - 1;
+        // Se oculta la última actualización si es veterinario y la evolución la hizo otro usuario
+        const canSeeUpdatedAt =
+          !isVet || parseInt(record.user_id) === parseInt(authenticatedUser?.id);
 
         return (
           <div key={record.id} className="timeline-item">
@@ -122,10 +129,12 @@ export default function VetRecordsTimeline({ vetRecords }) {
                           <FaClock color="#6c757d" size={12} /> <strong>Registro creado:</strong>{" "}
                           {formatDateTime(record.created_at)}
                         </p>
-                        <p style={{ fontSize: "0.8rem", color: "#666", marginBottom: "0" }}>
-                          <FaEdit color="#6c757d" size={12} /> <strong>Última actualización:</strong>{" "}
-                          {formatDateTime(record.updated_at)}
-                        </p>
+                        {canSeeUpdatedAt && (
+                          <p style={{ fontSize: "0.8rem", color: "#666", marginBottom: "0" }}>
+                            <FaEdit color="#6c757d" size={12} /> <strong>Última actualización:</strong>{" "}
+                            {formatDateTime(record.updated_at)}
+                          </p>
+                        )}
                       </div>
                       <div style={{ display: "flex", gap: "5px" }}>
                         <EditVetRecord vetRecord={record} />

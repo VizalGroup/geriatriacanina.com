@@ -26,6 +26,23 @@ export default function SystemNotes() {
             <h2 className="system-notes-title">Registro de Actualizaciones</h2>
             <ul className="notes-timeline">
               <li className="timeline-item">
+                <span className="timeline-date">25 de Junio de 2026</span>
+                <ul className="timeline-updates">
+                  <li className="update-item">
+                    Configuración de permisos para el rol Veterinario/a: ya no puede ver ni utilizar los botones de acciones (perfil de mascota, WhatsApp, editar y eliminar) en la tabla de usuarios
+                  </li>
+                  <li className="update-item">
+                    El rol Veterinario/a solo puede ver la fecha de última actualización de las evoluciones clínicas que registró él mismo; en las evoluciones cargadas por otro profesional, esa fecha permanece oculta
+                  </li>
+                  <li className="update-item">
+                    En la tabla de indicaciones médicas, el rol Veterinario/a solo puede editar y eliminar las indicaciones que registró él mismo; en las indicaciones de otro profesional esos botones no se muestran (la generación del PDF sigue disponible)
+                  </li>
+                  <li className="update-item">
+                    El rol Veterinario/a ya no puede editar los datos de las mascotas desde las tarjetas del listado: el botón "Editar" deja de mostrarse para este rol
+                  </li>
+                </ul>
+              </li>
+              <li className="timeline-item">
                 <span className="timeline-date">13 de Abril de 2026</span>
                 <ul className="timeline-updates">
                   <li className="update-item">

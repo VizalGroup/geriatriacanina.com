@@ -24,6 +24,7 @@ import {
   getSexName,
   calculateAge,
   formatDateTime,
+  isVeterinarian,
 } from "../../utils";
 import EditPet from "./EditPet";
 import RemovePet from "./RemovePet";
@@ -34,6 +35,9 @@ export default function PetsContainer({ pets }) {
   const navigate = useNavigate();
   const vetRecords = useSelector((state) => state.vetRecords);
   const petMedicalDocuments = useSelector((state) => state.petMedicalDocuments);
+  const authenticatedUser = useSelector((state) => state.authenticatedUser);
+  // El rol veterinario no puede editar los datos de las mascotas desde las cards
+  const isVet = isVeterinarian(authenticatedUser?.user_role);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -355,7 +359,7 @@ export default function PetsContainer({ pets }) {
                     >
                       <FaEye /> Ver Detalle
                     </Button>
-                    <EditPet pet={pet} />
+                    {!isVet && <EditPet pet={pet} />}
                     {canDeletePet(pet) && <RemovePet pet={pet} />}
                   </div>
                 </Card.Footer>

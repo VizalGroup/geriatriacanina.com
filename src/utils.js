@@ -347,6 +347,11 @@ export const isClient = (userRole) => {
   return parseInt(userRole) === 3;
 };
 
+// Función para verificar si es veterinario/a (rol 2)
+export const isVeterinarian = (userRole) => {
+  return parseInt(userRole) === 2;
+};
+
 // Función para verificar si puede gestionar usuarios y mascotas (roles 0, 1, 2)
 export const canManageSystem = (userRole) => {
   const role = parseInt(userRole);

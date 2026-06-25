@@ -15,7 +15,7 @@ import { RiUserSettingsLine } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Pagination from "../Pagination";
-import { getUserRoleName, formatDateTime, capitalizeName } from "../../utils";
+import { getUserRoleName, formatDateTime, capitalizeName, isVeterinarian } from "../../utils";
 import EditUser from "./EditUser";
 import RemoveUser from "./RemoveUser";
 import UserPetsModal from "./UserPetsModal";
@@ -23,6 +23,9 @@ import UserPetsModal from "./UserPetsModal";
 export default function UsersTable({ users }) {
   const navigate = useNavigate();
   const pets = useSelector((state) => state.pets);
+  const authenticatedUser = useSelector((state) => state.authenticatedUser);
+  // El rol veterinario (2) no puede usar ni ver las acciones de la tabla de usuarios
+  const isVet = isVeterinarian(authenticatedUser?.user_role);
   const [currentPage, setCurrentPage] = useState(1);
   const [showPetsModal, setShowPetsModal] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
@@ -154,7 +157,7 @@ export default function UsersTable({ users }) {
                 <FaHome /> Dirección
               </th>
               <th>Estado</th>
-              <th>Acciones</th>
+              {!isVet && <th>Acciones</th>}
             </tr>
           </thead>
           <tbody>
@@ -220,6 +223,7 @@ export default function UsersTable({ users }) {
                         : "Inactivo"}
                   </span>
                 </td>
+                {!isVet && (
                 <td>
                   {(() => {
                     const userPetsCount = pets.filter(
@@ -271,6 +275,7 @@ export default function UsersTable({ users }) {
                   <EditUser user={user} />
                   <RemoveUser user={user} />
                 </td>
+                )}
               </tr>
             ))}
           </tbody>

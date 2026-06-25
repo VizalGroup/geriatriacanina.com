@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { capitalizeName, getSexName, getPrescriptionType, formatDateTime, formatDate } from "../../utils";
+import { capitalizeName, getSexName, getPrescriptionType, formatDateTime, formatDate, isVeterinarian } from "../../utils";
 import EditPrescription from "./EditPrescription";
 import GeneratePrescriptionPDF from "./GeneratePrescriptionPDF";
 import RemovePrescription from "./RemovePrescription";
@@ -11,6 +11,9 @@ import { useSelector } from "react-redux";
 
 export default function PrescriptionsTable({ prescriptions }) {
   const pets = useSelector((state) => state.pets);
+  const authenticatedUser = useSelector((state) => state.authenticatedUser);
+  // El veterinario solo puede editar/borrar las indicaciones que creó él mismo
+  const isVet = isVeterinarian(authenticatedUser?.user_role);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -65,6 +68,10 @@ export default function PrescriptionsTable({ prescriptions }) {
               // Buscar el owner desde pets
               const pet = pets.find(p => p.id === prescription.pet_id);
               const owner = pet?.owner;
+
+              // Solo puede modificar si no es veterinario o si la indicación es propia
+              const canModify =
+                !isVet || parseInt(prescription.vet_id) === parseInt(authenticatedUser?.id);
 
               return (
                 <tr key={prescription.id}>
@@ -157,8 +164,12 @@ export default function PrescriptionsTable({ prescriptions }) {
                   {/* Columna Acciones */}
                   <td>
                     <GeneratePrescriptionPDF prescription={prescription} />
-                    <EditPrescription prescription={prescription} />
-                    <RemovePrescription prescription={prescription} />
+                    {canModify && (
+                      <>
+                        <EditPrescription prescription={prescription} />
+                        <RemovePrescription prescription={prescription} />
+                      </>
+                    )}
                   </td>
                 </tr>
               )
