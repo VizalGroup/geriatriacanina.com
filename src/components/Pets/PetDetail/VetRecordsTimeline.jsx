@@ -95,7 +95,7 @@ export default function VetRecordsTimeline({ vetRecords }) {
                   {record.anamnesis && (
                     <div style={{ marginBottom: "15px" }}>
                       <p style={{ fontWeight: "600", color: "#103585", marginBottom: "8px" }}>
-                        <FaNotesMedical color="#2858BF" /> Anamnesis:
+                        <FaNotesMedical color="#2858BF" /> Detalle de consulta:
                       </p>
                       <p style={{ fontSize: "0.95rem", color: "#555", whiteSpace: "pre-wrap", lineHeight: "1.6" }}>
                         {record.anamnesis}

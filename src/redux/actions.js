@@ -113,6 +113,7 @@ export const PostUser = (atributos) => {
       form.append("phone", atributos.phone);
       form.append("is_activate", atributos.is_activate);
       form.append("street_address", atributos.street_address);
+      form.append("neighborhood", atributos.neighborhood ?? "");
       form.append("created_at", atributos.created_at);
       form.append("updated_at", atributos.updated_at);
 
@@ -150,6 +151,7 @@ export const updateUser = (id, atributos) => {
       form.append("phone", atributos.phone);
       form.append("is_activate", atributos.is_activate);
       form.append("street_address", atributos.street_address);
+      form.append("neighborhood", atributos.neighborhood ?? "");
       form.append("created_at", atributos.created_at);
       form.append("updated_at", atributos.updated_at);
 

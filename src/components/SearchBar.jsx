@@ -1,10 +1,19 @@
 import { Form } from "react-bootstrap";
 import { FaSearch } from "react-icons/fa";
 
-export default function SearchBar({ searchTerm, setSearchTerm, placeholder }) {
+export default function SearchBar({
+  searchTerm,
+  setSearchTerm,
+  placeholder,
+  children,
+}) {
+  // Si se reciben filtros adicionales (children), el buscador comparte la fila con ellos
+  // y deja de estar centrado a lo ancho del contenedor
   return (
     <div className="search-container">
-      <Form.Group className="search-form-group">
+      <Form.Group
+        className={children ? "filter-form-group" : "search-form-group"}
+      >
         <Form.Label>
           <FaSearch /> Buscar
         </Form.Label>
@@ -16,6 +25,7 @@ export default function SearchBar({ searchTerm, setSearchTerm, placeholder }) {
           className="search-input"
         />
       </Form.Group>
+      {children}
     </div>
   );
 }

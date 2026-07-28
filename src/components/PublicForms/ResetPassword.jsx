@@ -151,6 +151,7 @@ export default function ResetPassword() {
         phone: fullUserData.phone || "",
         is_activate: fullUserData.is_activate,
         street_address: fullUserData.street_address || "",
+        neighborhood: fullUserData.neighborhood || "",
         created_at: fullUserData.created_at,
         updated_at: getCurrentDateTime(),
       };

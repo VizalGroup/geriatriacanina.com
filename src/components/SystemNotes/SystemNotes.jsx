@@ -26,6 +26,52 @@ export default function SystemNotes() {
             <h2 className="system-notes-title">Registro de Actualizaciones</h2>
             <ul className="notes-timeline">
               <li className="timeline-item">
+                <span className="timeline-date">28 de Julio de 2026</span>
+                <ul className="timeline-updates">
+                  <li className="update-item">
+                    Corrección en los PDF de indicaciones: el peso que se muestra ahora es siempre el último registrado en la historia clínica. Antes, en algunos casos, aparecía el peso anterior
+                  </li>
+                  <li className="update-item">
+                    En los PDF de indicaciones, la franja gris superior ahora muestra el título de la indicación en negrita junto a la fecha. Se quitó el número de solicitud
+                  </li>
+                  <li className="update-item">
+                    En los PDF de indicaciones, el título de la indicación se agrandó un 30% para que se lea con mayor claridad al abrir o imprimir el documento
+                  </li>
+                  <li className="update-item">
+                    En los PDF de indicaciones, al lado de la fecha de nacimiento de la mascota ahora se muestra su edad en años. La edad se calcula según la fecha del documento, por lo que en las indicaciones antiguas se sigue viendo la edad que tenía la mascota en ese momento
+                  </li>
+                  <li className="update-item">
+                    En los PDF de indicaciones, los títulos "Datos de la mascota" y "Medicamentos indicados" se muestran en azul, en negrita y del mismo tamaño que el texto que aparece debajo. Se aplicó el mismo criterio a los títulos "Indicaciones" y "Advertencias" para mantener el mismo estilo en todo el documento
+                  </li>
+                  <li className="update-item">
+                    En el listado de indicaciones, el buscador ahora permite buscar por mascota o por tutor/a. Se quitaron las búsquedas por veterinario/a y por notas internas
+                  </li>
+                  <li className="update-item">
+                    En el listado de indicaciones se agregó un filtro de fechas "Desde" y "Hasta" con calendario, para no tener que escribir la fecha a mano. Se puede combinar con el buscador de mascota o tutor/a y limpiar con un botón
+                  </li>
+                  <li className="update-item">
+                    Se agregó el campo "Barrio" a los usuarios. Se pide al registrar un usuario nuevo, tanto desde el sistema como desde el enlace público de registro, y se puede completar o corregir desde la edición del usuario. El barrio se ve en la tabla de usuarios debajo de la dirección y también se puede buscar por él desde el buscador. Los usuarios cargados antes de esta actualización aparecen con el barrio vacío hasta que se complete
+                  </li>
+                  <li className="update-item">
+                    En el formulario de registro de una nueva mascota, los campos se reordenaron para completarlos con mayor comodidad: Nombre, Fecha de nacimiento, Especie, Raza, Sexo, Fecha de castración y Tutor/a. El cambio se aplicó tanto al formulario de la veterinaria como al que utilizan los tutores desde su panel
+                  </li>
+                </ul>
+              </li>
+              <li className="timeline-item">
+                <span className="timeline-date">1 de Julio de 2026</span>
+                <ul className="timeline-updates">
+                  <li className="update-item">
+                    Al editar una evolución clínica, la etiqueta "Motivo de Consulta" fue reemplazada por "Tipo de consulta" para que coincida con el formulario de registro de evoluciones
+                  </li>
+                  <li className="update-item">
+                    En el formulario de edición de evoluciones, la etiqueta "Anamnesis" ahora se muestra como "Detalle de consulta"
+                  </li>
+                  <li className="update-item">
+                    En la visualización de las evoluciones clínicas, la palabra "Anamnesis" fue cambiada por "Detalle de consulta"
+                  </li>
+                </ul>
+              </li>
+              <li className="timeline-item">
                 <span className="timeline-date">25 de Junio de 2026</span>
                 <ul className="timeline-updates">
                   <li className="update-item">

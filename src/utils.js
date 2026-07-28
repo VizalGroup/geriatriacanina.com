@@ -108,7 +108,8 @@ export const getAdministrationRoute = (route) => {
 };
 
 // Función para calcular la edad en una fecha específica
-export const calculateAgeAtDate = (birthdate, targetDate) => {
+// Con onlyYears en true devuelve solo los años cumplidos (ej: "5 años")
+export const calculateAgeAtDate = (birthdate, targetDate, onlyYears = false) => {
   if (!birthdate || !targetDate || targetDate === "0000-00-00" || birthdate === "0000-00-00") {
     return null;
   }
@@ -130,6 +131,10 @@ export const calculateAgeAtDate = (birthdate, targetDate) => {
       years--;
       months = 11;
     }
+  }
+
+  if (onlyYears) {
+    return `${years} ${years === 1 ? "año" : "años"}`;
   }
 
   return `${years} años, ${months} meses`;
@@ -223,6 +228,21 @@ export const normalizeText = (text) => {
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .trim();
+};
+
+// Verifica si una fecha entra dentro de un rango "desde / hasta".
+// Trabaja con cadenas en formato ISO (aaaa-mm-dd), que se pueden comparar
+// alfabéticamente sin necesidad de construir objetos Date.
+export const isDateInRange = (date, dateFrom, dateTo) => {
+  if (!dateFrom && !dateTo) return true;
+  if (!date) return false;
+
+  const day = date.toString().slice(0, 10); // descarta la hora si el valor es un datetime
+
+  if (dateFrom && day < dateFrom) return false;
+  if (dateTo && day > dateTo) return false;
+
+  return true;
 };
 
 // Función para calcular el tiempo restante de sesión

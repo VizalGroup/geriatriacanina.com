@@ -4,6 +4,7 @@ import { FaFilePdf, FaEye, FaDownload } from "react-icons/fa";
 import jsPDF from "jspdf";
 import {
   formatDate,
+  calculateAgeAtDate,
   getSpeciesName,
   getSexName,
   getPrescriptionType,
@@ -12,6 +13,7 @@ import {
 import firmaDigital from "../../assets/firma_digital_betina.jpg";
 import logoVeterinaria from "../../assets/pictures/Logo_white_background.jpg"; // Agregar el logo
 import { useSelector } from "react-redux";
+import { selectVetRecordsByDate } from "../../redux/selectors/selectors";
 
 export default function GeneratePrescriptionPDF({ prescription }) {
   const [showModal, setShowModal] = useState(false);
@@ -19,7 +21,9 @@ export default function GeneratePrescriptionPDF({ prescription }) {
   const prescriptionMedications = useSelector(
     (state) => state.prescriptionMedications
   );
-  const vetRecords = useSelector((state) => state.vetRecords);
+  // Se usa el selector ordenado por fecha de evento (más reciente primero) para
+  // garantizar que el peso mostrado sea siempre el último registrado
+  const vetRecords = useSelector(selectVetRecordsByDate);
 
   // Buscar el pet completo con owner
   const pet = pets.find(p => p.id === prescription.pet_id);
@@ -27,16 +31,17 @@ export default function GeneratePrescriptionPDF({ prescription }) {
 
   // Función para obtener el último peso registrado
   const getLastWeight = () => {
-    const petVetRecords = vetRecords.filter(
-      (record) => parseInt(record.pet_id) === parseInt(prescription.pet_id)
+    const recordsWithWeight = vetRecords.filter(
+      (record) =>
+        parseInt(record.pet_id) === parseInt(prescription.pet_id) &&
+        record.weight
     );
-    const recordsWithWeight = petVetRecords.filter((record) => record.weight);
-    
+
     if (recordsWithWeight.length === 0) {
       return null;
     }
-    
-    return recordsWithWeight[0]; // Ya viene ordenado por fecha descendente
+
+    return recordsWithWeight[0]; // vetRecords ya viene ordenado por fecha descendente
   };
 
   // Filtrar medicamentos de esta prescripción
@@ -97,33 +102,34 @@ export default function GeneratePrescriptionPDF({ prescription }) {
       };
     });
 
-    // Subtítulo del tipo de documento
-    pdf.setFontSize(12);
-    pdf.setFont("helvetica", "normal");
-    pdf.text(displayTitle, pageWidth / 2, 20, { align: "center" });
-
     yPosition = 35;
 
     // Restablecer color de texto a negro
     pdf.setTextColor(0, 0, 0);
 
-    // Número de solicitud y fecha en un recuadro
+    // Título de la indicación y fecha en la franja resaltada
     pdf.setFillColor(240, 240, 240);
     pdf.rect(marginLeft, yPosition, maxWidth, 10, "F");
-    
+
+    // La fecha se dibuja primero para saber cuánto espacio queda para el título
+    const dateText = `Fecha: ${formatDate(dateOnly)}`;
     pdf.setFontSize(10);
     pdf.setFont("helvetica", "bold");
-    pdf.text(`Solicitud Nro: ${prescription.id}`, marginLeft + 2, yPosition + 6);
-    pdf.text(
-      `Fecha: ${formatDate(dateOnly)}`,
-      pageWidth - marginRight - 2,
-      yPosition + 6,
-      { align: "right" }
-    );
+    const dateWidth = pdf.getTextWidth(dateText);
+    pdf.text(dateText, pageWidth - marginRight - 2, yPosition + 6, {
+      align: "right",
+    });
+
+    // Título en negrita, recortado si no entra junto a la fecha
+    // Tamaño aumentado un 30% respecto al original (11 -> 14.3)
+    pdf.setFontSize(14.3);
+    const titleMaxWidth = maxWidth - dateWidth - 8;
+    const titleLine = pdf.splitTextToSize(displayTitle, titleMaxWidth)[0];
+    pdf.text(titleLine, marginLeft + 2, yPosition + 6);
     yPosition += 15;
 
     // INFORMACIÓN DE LA MASCOTA sin fondo ni borde
-    pdf.setFontSize(12);
+    pdf.setFontSize(10);
     pdf.setFont("helvetica", "bold");
     pdf.setTextColor(23, 57, 128);
     pdf.text("DATOS DE LA MASCOTA", marginLeft, yPosition);
@@ -142,8 +148,17 @@ export default function GeneratePrescriptionPDF({ prescription }) {
         ? getSexName(prescription.pet.sex)
         : "No especificado";
     const breed = prescription.pet?.breed || "No especificada";
-    const birthDate = prescription.pet?.birth_date 
-      ? formatDate(prescription.pet.birth_date) 
+    // A la fecha de nacimiento se le agrega la edad en años que tenía la
+    // mascota en la fecha del documento (no la edad actual)
+    const ageAtDocumentDate = calculateAgeAtDate(
+      prescription.pet?.birth_date,
+      dateOnly,
+      true
+    );
+    const birthDate = prescription.pet?.birth_date
+      ? `${formatDate(prescription.pet.birth_date)}${
+          ageAtDocumentDate ? ` (${ageAtDocumentDate})` : ""
+        }`
       : "No especificada";
 
     // Primera columna - Datos de la mascota
@@ -212,7 +227,7 @@ export default function GeneratePrescriptionPDF({ prescription }) {
     // CONTENIDO (si no es null)
     if (prescription.content && prescription.content.trim() !== "") {
       // Título de sección
-      pdf.setFontSize(11);
+      pdf.setFontSize(10);
       pdf.setFont("helvetica", "bold");
       pdf.setTextColor(23, 57, 128);
       pdf.text("INDICACIONES:", marginLeft, yPosition);
@@ -255,7 +270,7 @@ export default function GeneratePrescriptionPDF({ prescription }) {
         }
 
         // Título de sección
-        pdf.setFontSize(11);
+        pdf.setFontSize(10);
         pdf.setFont("helvetica", "bold");
         pdf.setTextColor(23, 57, 128);
         pdf.text("MEDICAMENTOS INDICADOS:", marginLeft, yPosition);
@@ -411,7 +426,7 @@ export default function GeneratePrescriptionPDF({ prescription }) {
         yPosition = 30;
       }
 
-      pdf.setFontSize(11);
+      pdf.setFontSize(10);
       pdf.setFont("helvetica", "bold");
       pdf.setTextColor(220, 53, 69); // Rojo para advertencias
       pdf.text("ADVERTENCIAS:", marginLeft, yPosition);

@@ -15,6 +15,7 @@ import {
   FaCity,
   FaMapMarked,
   FaGlobe,
+  FaMapPin,
 } from "react-icons/fa";
 import { getCurrentDateTime } from "../../utils";
 import { PostUser, GetUsers } from "../../redux/actions";
@@ -30,6 +31,7 @@ const userFormData = {
   is_activate: 2, // Por defecto pendiente de activar.
   street_name: "",
   street_number: "",
+  neighborhood: "",
   city: "",
   province: "",
   country: "", 
@@ -81,6 +83,7 @@ export default function UserRegistration() {
         phone: formData.phone,
         is_activate: formData.is_activate,
         street_address: street_address,
+        neighborhood: formData.neighborhood,
         created_at: currentDateTime,
         updated_at: currentDateTime,
       };
@@ -278,6 +281,22 @@ export default function UserRegistration() {
                       </Form.Group>
                     </Col>
                   </Row>
+
+                  <Form.Group controlId="neighborhood" className="mb-3">
+                    <Form.Label>
+                      <FaMapPin /> Barrio
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="neighborhood"
+                      value={formData.neighborhood}
+                      onChange={handleInputChange}
+                      placeholder="Ej: Las Cañitas"
+                      required
+                      disabled={isLoading}
+                      className="login-input"
+                    />
+                  </Form.Group>
 
                   <Row>
                     <Col md={6}>

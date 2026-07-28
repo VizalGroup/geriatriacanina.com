@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { GetUsers, updateUser } from "../../redux/actions";
 import { Button, Form, Modal } from "react-bootstrap";
-import { FaEdit, FaUser, FaUserEdit, FaAt, FaPhone, FaHome, FaToggleOn } from "react-icons/fa";
+import { FaEdit, FaUser, FaUserEdit, FaAt, FaPhone, FaHome, FaToggleOn, FaMapPin } from "react-icons/fa";
 import { RiUserSettingsLine } from "react-icons/ri";
 import { getCurrentDateTime } from "../../utils";
 import bcrypt from "bcryptjs";
@@ -203,6 +203,21 @@ export default function EditUser({ user }) {
                 value={formData.street_address}
                 onChange={handleInputChange}
                 required
+              />
+            </Form.Group>
+            <br />
+
+            <Form.Group controlId="neighborhood">
+              <Form.Label>
+                <FaMapPin /> Barrio
+              </Form.Label>
+              <Form.Control
+                type="text"
+                name="neighborhood"
+                // Los usuarios anteriores a esta versión no tienen barrio cargado
+                value={formData.neighborhood || ""}
+                onChange={handleInputChange}
+                placeholder="Ej: Las Cañitas"
               />
             </Form.Group>
             <br />

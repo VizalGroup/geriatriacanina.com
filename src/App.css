@@ -177,6 +177,19 @@ Georama bold y georama regular
   min-width: 200px;
 }
 
+/* Grupo de filtros que comparten fila con el buscador (ej: rango de fechas) */
+.filter-form-group {
+  flex: 1 1 180px;
+  min-width: 160px;
+}
+
+/* Botón para limpiar filtros, alineado con los inputs de la fila */
+.filter-clear-group {
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 1px;
+}
+
 .search-input {
   border: 1px solid #ccc;
   border-radius: 10px;

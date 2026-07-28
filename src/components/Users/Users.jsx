@@ -65,7 +65,8 @@ export default function Users() {
       normalizeText(user.lastname).includes(normalizedSearch) ||
       normalizeText(user.email).includes(normalizedSearch) ||
       normalizeText(user.phone).includes(normalizedSearch) ||
-      normalizeText(user.street_address).includes(normalizedSearch)
+      normalizeText(user.street_address).includes(normalizedSearch) ||
+      normalizeText(user.neighborhood).includes(normalizedSearch)
     );
   });
 
@@ -92,7 +93,7 @@ export default function Users() {
         <SearchBar
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
-          placeholder="Buscar por nombre, email, teléfono o dirección..."
+          placeholder="Buscar por nombre, email, teléfono, dirección o barrio..."
         />
 
         <UsersTable users={filteredUsers} />

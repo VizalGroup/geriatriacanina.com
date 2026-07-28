@@ -211,25 +211,6 @@ export default function ClientAddPet() {
             </Form.Group>
             <br />
 
-            <Form.Group controlId="species">
-              <Form.Label>
-                <FaDog /> Especie <FaCat />
-              </Form.Label>
-              <Form.Control
-                as="select"
-                name="species"
-                value={formData.species}
-                onChange={handleInputChange}
-                required
-              >
-                <option value="">Seleccionar</option>
-                <option value={0}>Canino</option>
-                <option value={1}>Felino</option>
-                <option value={2}>Otro</option>
-              </Form.Control>
-            </Form.Group>
-            <br />
-
             <Form.Group controlId="pet_name">
               <Form.Label>
                 <FaPaw /> Nombre de la Mascota
@@ -256,6 +237,25 @@ export default function ClientAddPet() {
                 onChange={handleInputChange}
                 required
               />
+            </Form.Group>
+            <br />
+
+            <Form.Group controlId="species">
+              <Form.Label>
+                <FaDog /> Especie <FaCat />
+              </Form.Label>
+              <Form.Control
+                as="select"
+                name="species"
+                value={formData.species}
+                onChange={handleInputChange}
+                required
+              >
+                <option value="">Seleccionar</option>
+                <option value={0}>Canino</option>
+                <option value={1}>Felino</option>
+                <option value={2}>Otro</option>
+              </Form.Control>
             </Form.Group>
             <br />
 

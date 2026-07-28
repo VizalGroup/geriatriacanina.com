@@ -194,7 +194,12 @@ export default function UsersTable({ users }) {
                 <td>{user.email}</td>
                 <td>{user.phone || "No suministrado"}</td>
                 <td>{getUserRoleName(parseInt(user.user_role))}</td>
-                <td>{user.street_address || "No suministrado"}</td>
+                <td>
+                  <div>{user.street_address || "No suministrado"}</div>
+                  <div className="text-muted small" style={{ marginTop: "3px" }}>
+                    Barrio: {user.neighborhood || "No suministrado"}
+                  </div>
+                </td>
                 <td>
                   <span
                     style={{

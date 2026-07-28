@@ -16,6 +16,7 @@ import {
   FaCity,
   FaMapMarked,
   FaGlobe,
+  FaMapPin,
 } from "react-icons/fa";
 import { RiUserSettingsLine } from "react-icons/ri";
 
@@ -29,6 +30,7 @@ const userFormData = {
   is_activate: 1,
   street_name: "",
   street_number: "",
+  neighborhood: "",
   city: "",
   province: "",
   country: "",
@@ -88,6 +90,7 @@ export default function AddUser() {
         phone: formData.phone,
         is_activate: formData.is_activate,
         street_address: street_address,
+        neighborhood: formData.neighborhood,
         created_at: currentDateTime,
         updated_at: currentDateTime,
       };
@@ -275,6 +278,21 @@ export default function AddUser() {
                 value={formData.street_number}
                 onChange={handleInputChange}
                 placeholder="Ej: 267"
+                required
+              />
+            </Form.Group>
+            <br />
+
+            <Form.Group controlId="neighborhood">
+              <Form.Label>
+                <FaMapPin /> Barrio
+              </Form.Label>
+              <Form.Control
+                type="text"
+                name="neighborhood"
+                value={formData.neighborhood}
+                onChange={handleInputChange}
+                placeholder="Ej: Las Cañitas"
                 required
               />
             </Form.Group>

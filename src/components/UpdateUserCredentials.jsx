@@ -23,6 +23,7 @@ import {
   FaEye,
   FaEyeSlash,
   FaInfoCircle,
+  FaMapPin,
 } from "react-icons/fa";
 import { RiUserSettingsLine } from "react-icons/ri";
 import { getCurrentDateTime } from "../utils";
@@ -290,6 +291,20 @@ export default function UpdateUserCredentials() {
                         <Form.Control
                           type="text"
                           value={userDetail.street_address}
+                          disabled
+                          style={{ backgroundColor: "#e9ecef" }}
+                        />
+                      </Form.Group>
+                    </Col>
+
+                    <Col md={12} className="mb-3">
+                      <Form.Group>
+                        <Form.Label>
+                          <FaMapPin /> Barrio
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          value={userDetail.neighborhood || "No suministrado"}
                           disabled
                           style={{ backgroundColor: "#e9ecef" }}
                         />
