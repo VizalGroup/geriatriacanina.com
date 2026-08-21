@@ -11,7 +11,7 @@ import {
   getAdministrationRoute,
 } from "../../utils";
 import firmaDigital from "../../assets/firma_digital_betina.jpg";
-import logoVeterinaria from "../../assets/pictures/Logo_white_background.jpg"; // Agregar el logo
+import logoWatermark from "../../assets/pictures/logo_watermark.png";
 import { useSelector } from "react-redux";
 import { selectVetRecordsByDate } from "../../redux/selectors/selectors";
 
@@ -60,14 +60,65 @@ export default function GeneratePrescriptionPDF({ prescription }) {
     const pageHeight = pdf.internal.pageSize.getHeight();
 
     // Configuración de márgenes
-    const marginLeft = 20;
-    const marginRight = 20;
+    const marginLeft = 15;
+    const marginRight = 15;
     const maxWidth = pageWidth - marginLeft - marginRight;
     let yPosition = 20;
 
-    // Fondo blanco
-    pdf.setFillColor(255, 255, 255);
-    pdf.rect(0, 0, pageWidth, pageHeight, "F");
+    // Cargar el logo y pre-renderizarlo ya atenuado sobre fondo blanco (imagen opaca),
+    // para usarlo como marca de agua. Se evita aplicar la opacidad vía GState de jsPDF
+    // porque combinada con el canal alfa del PNG hace que la imagen se vea recortada.
+    const logoImg = new Image();
+    logoImg.crossOrigin = "anonymous";
+    logoImg.src = logoWatermark;
+    let watermarkDataUrl = null;
+    let watermarkAspectRatio = 1.543;
+
+    await new Promise((resolve) => {
+      logoImg.onload = function () {
+        watermarkAspectRatio = logoImg.naturalWidth / logoImg.naturalHeight;
+
+        const canvas = document.createElement("canvas");
+        canvas.width = logoImg.naturalWidth;
+        canvas.height = logoImg.naturalHeight;
+        const ctx = canvas.getContext("2d");
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.globalAlpha = 0.14;
+        ctx.drawImage(logoImg, 0, 0, canvas.width, canvas.height);
+
+        watermarkDataUrl = canvas.toDataURL("image/png");
+        resolve();
+      };
+      logoImg.onerror = function () {
+        console.log("No se pudo cargar el logo de marca de agua");
+        resolve();
+      };
+    });
+
+    // Dibuja el fondo blanco de la página actual y el logo como marca de agua centrada
+    const drawPageBackground = () => {
+      pdf.setFillColor(255, 255, 255);
+      pdf.rect(0, 0, pageWidth, pageHeight, "F");
+
+      if (watermarkDataUrl) {
+        const watermarkWidth = pageWidth * 0.85;
+        const watermarkHeight = watermarkWidth / watermarkAspectRatio;
+        const watermarkX = (pageWidth - watermarkWidth) / 2;
+        const watermarkY = (pageHeight - watermarkHeight) / 2;
+
+        pdf.addImage(watermarkDataUrl, "PNG", watermarkX, watermarkY, watermarkWidth, watermarkHeight);
+      }
+    };
+
+    drawPageBackground();
+
+    // ENCABEZADO: nombre de la veterinaria en el lugar donde antes iba el logo
+    pdf.setFontSize(16);
+    pdf.setFont("helvetica", "bold");
+    pdf.setTextColor(23, 57, 128);
+    pdf.text("Veterinaria Geriatría Canina", pageWidth / 2, 14, { align: "center" });
+    yPosition = 21;
 
     // Extraer solo la fecha del datetime
     const dateOnly = prescription.created_at.split(" ")[0];
@@ -77,32 +128,6 @@ export default function GeneratePrescriptionPDF({ prescription }) {
       prescription.title && prescription.title.trim() !== ""
         ? prescription.title
         : getPrescriptionType(prescription.prescription_type);
-
-    // ENCABEZADO CON LOGO
-    // Sin fondo de color
-    
-    // Cargar y agregar el logo
-    const logoImg = new Image();
-    logoImg.crossOrigin = "anonymous";
-    logoImg.src = logoVeterinaria;
-
-    await new Promise((resolve) => {
-      logoImg.onload = function () {
-        // Logo en la esquina superior derecha con proporciones correctas
-        // Dimensiones originales: 2266x1468, relación ≈ 1.54:1
-        const logoWidth = 40;
-        const logoHeight = logoWidth / 1.543; // Mantener proporción
-        const logoX = pageWidth - marginRight - logoWidth;
-        pdf.addImage(logoImg, "PNG", logoX, 5, logoWidth, logoHeight);
-        resolve();
-      };
-      logoImg.onerror = function () {
-        console.log("No se pudo cargar el logo");
-        resolve();
-      };
-    });
-
-    yPosition = 35;
 
     // Restablecer color de texto a negro
     pdf.setTextColor(0, 0, 0);
@@ -240,10 +265,9 @@ export default function GeneratePrescriptionPDF({ prescription }) {
       const contentLines = pdf.splitTextToSize(prescription.content, maxWidth);
 
       contentLines.forEach((line) => {
-        if (yPosition > pageHeight - 80) {
+        if (yPosition > pageHeight - 25) {
           pdf.addPage();
-          pdf.setFillColor(255, 255, 255);
-          pdf.rect(0, 0, pageWidth, pageHeight, "F");
+          drawPageBackground();
           yPosition = 30;
         }
 
@@ -262,10 +286,9 @@ export default function GeneratePrescriptionPDF({ prescription }) {
       );
 
       if (medications.length > 0) {
-        if (yPosition > pageHeight - 80) {
+        if (yPosition > pageHeight - 30) {
           pdf.addPage();
-          pdf.setFillColor(255, 255, 255);
-          pdf.rect(0, 0, pageWidth, pageHeight, "F");
+          drawPageBackground();
           yPosition = 30;
         }
 
@@ -280,17 +303,13 @@ export default function GeneratePrescriptionPDF({ prescription }) {
         // Mostrar cada medicamento
         medications.forEach((medication, index) => {
           // Verificar si hay espacio suficiente para el medicamento
-          if (yPosition > pageHeight - 100) {
+          if (yPosition > pageHeight - 55) {
             pdf.addPage();
-            pdf.setFillColor(255, 255, 255);
-            pdf.rect(0, 0, pageWidth, pageHeight, "F");
+            drawPageBackground();
             yPosition = 30;
           }
 
-          // Nombre del medicamento como título con fondo
-          pdf.setFillColor(250, 250, 250);
-          pdf.rect(marginLeft, yPosition - 4, maxWidth, 7, "F");
-          
+          // Nombre del medicamento como título
           pdf.setFontSize(11);
           pdf.setFont("helvetica", "bold");
           const medicationName = medication.medication_name || "No especificado";
@@ -316,10 +335,9 @@ export default function GeneratePrescriptionPDF({ prescription }) {
           );
           let dosageX = marginLeft + pdf.getTextWidth("Dosis:  ");
           dosageLines.forEach((line, idx) => {
-            if (yPosition > pageHeight - 80) {
+            if (yPosition > pageHeight - 25) {
               pdf.addPage();
-              pdf.setFillColor(255, 255, 255);
-              pdf.rect(0, 0, pageWidth, pageHeight, "F");
+              drawPageBackground();
               yPosition = 30;
             }
             if (idx === 0) {
@@ -341,10 +359,9 @@ export default function GeneratePrescriptionPDF({ prescription }) {
           );
           let durationX = marginLeft + pdf.getTextWidth("Duración:  ");
           durationLines.forEach((line, idx) => {
-            if (yPosition > pageHeight - 80) {
+            if (yPosition > pageHeight - 25) {
               pdf.addPage();
-              pdf.setFillColor(255, 255, 255);
-              pdf.rect(0, 0, pageWidth, pageHeight, "F");
+              drawPageBackground();
               yPosition = 30;
             }
             if (idx === 0) {
@@ -380,10 +397,9 @@ export default function GeneratePrescriptionPDF({ prescription }) {
             );
             let instructionsX = marginLeft + pdf.getTextWidth("Instrucciones:   ");
             instructionsLines.forEach((line, idx) => {
-              if (yPosition > pageHeight - 80) {
+              if (yPosition > pageHeight - 25) {
                 pdf.addPage();
-                pdf.setFillColor(255, 255, 255);
-                pdf.rect(0, 0, pageWidth, pageHeight, "F");
+                drawPageBackground();
                 yPosition = 30;
               }
               if (idx === 0) {
@@ -419,10 +435,9 @@ export default function GeneratePrescriptionPDF({ prescription }) {
       prescription.warnings &&
       prescription.warnings.trim() !== ""
     ) {
-      if (yPosition > pageHeight - 80) {
+      if (yPosition > pageHeight - 35) {
         pdf.addPage();
-        pdf.setFillColor(255, 255, 255);
-        pdf.rect(0, 0, pageWidth, pageHeight, "F");
+        drawPageBackground();
         yPosition = 30;
       }
 
@@ -442,10 +457,9 @@ export default function GeneratePrescriptionPDF({ prescription }) {
       );
 
       warningsLines.forEach((line) => {
-        if (yPosition > pageHeight - 80) {
+        if (yPosition > pageHeight - 25) {
           pdf.addPage();
-          pdf.setFillColor(255, 255, 255);
-          pdf.rect(0, 0, pageWidth, pageHeight, "F");
+          drawPageBackground();
           yPosition = 30;
         }
 
@@ -457,14 +471,13 @@ export default function GeneratePrescriptionPDF({ prescription }) {
     }
 
     // FIRMA Y DATOS DEL VETERINARIO
-    // Asegurar que haya espacio suficiente para la firma
-    if (yPosition > pageHeight - 80) {
+    // Asegurar que haya espacio suficiente para la firma (imagen 25mm + 5 líneas de texto + margen inferior)
+    if (yPosition > pageHeight - 56) {
       pdf.addPage();
-      pdf.setFillColor(255, 255, 255);
-      pdf.rect(0, 0, pageWidth, pageHeight, "F");
+      drawPageBackground();
       yPosition = 30;
     } else {
-      yPosition = pageHeight - 70; // Posicionar la firma en la parte inferior
+      yPosition = pageHeight - 56; // Posicionar la firma en la parte inferior
     }
 
     // Cargar y agregar la imagen de la firma
@@ -486,17 +499,17 @@ export default function GeneratePrescriptionPDF({ prescription }) {
       pdf.setFont("helvetica", "bold");
       const textX = pageWidth - marginRight;
       pdf.text("Betina van Muylem", textX, yPosition, { align: "right" });
-      yPosition += 5;
+      yPosition += 4.5;
 
       pdf.setFont("helvetica", "normal");
       pdf.text("Médica Veterinaria", textX, yPosition, { align: "right" });
-      yPosition += 5;
+      yPosition += 4.5;
       pdf.text("M.P. 2502", textX, yPosition, { align: "right" });
-      yPosition += 5;
+      yPosition += 4.5;
       pdf.text("Teléfono (WhatsApp)", textX, yPosition, { align: "right" });
-      yPosition += 5;
+      yPosition += 4.5;
       pdf.text("+5493512472384", textX, yPosition, { align: "right" });
-      yPosition += 5;
+      yPosition += 4.5;
       pdf.text("Córdoba, Argentina", textX, yPosition, { align: "right" });
 
       // Guardar o visualizar el PDF según la acción
@@ -526,17 +539,17 @@ export default function GeneratePrescriptionPDF({ prescription }) {
       pdf.setFont("helvetica", "bold");
       const textX = pageWidth - marginRight;
       pdf.text("Betina van Muylem", textX, yPosition, { align: "right" });
-      yPosition += 5;
+      yPosition += 4.5;
 
       pdf.setFont("helvetica", "normal");
       pdf.text("Médica Veterinaria", textX, yPosition, { align: "right" });
-      yPosition += 5;
+      yPosition += 4.5;
       pdf.text("M.P. 2502", textX, yPosition, { align: "right" });
-      yPosition += 5;
+      yPosition += 4.5;
       pdf.text("Teléfono (WhatsApp) +5493512472384", textX, yPosition, {
         align: "right",
       });
-      yPosition += 5;
+      yPosition += 4.5;
       pdf.text("Córdoba, Argentina", textX, yPosition, { align: "right" });
 
       const fileName = `Indicacion_${prescription.id}_${

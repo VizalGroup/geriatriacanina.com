@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Button, Alert, Modal, Spinner, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { getCurrentDateTime, capitalizeName, normalizeText } from "../../utils";
-import { updatePrescription, updatePrescriptionMedication, DeletePrescriptionMedication, PostPrescriptionMedication, GetPrescriptions, GetPrescriptionMedications, GetPets } from "../../redux/actions";
+import { updatePrescription, updatePrescriptionMedication, DeletePrescriptionMedication, PostPrescriptionMedication, GetPrescriptions, GetPrescriptionMedications } from "../../redux/actions";
 import {
   FaEdit,
   FaPaw,
@@ -64,12 +64,6 @@ export default function EditPrescription({ prescription }) {
       presentation: ""
     };
   };
-
-  // Cargar mascotas y medicamentos al montar el componente
-  useEffect(() => {
-    dispatch(GetPets());
-    dispatch(GetPrescriptionMedications());
-  }, [dispatch]);
 
   // Cargar medicamentos cuando se abre el modal
   useEffect(() => {

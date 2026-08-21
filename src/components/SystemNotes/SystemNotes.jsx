@@ -26,6 +26,31 @@ export default function SystemNotes() {
             <h2 className="system-notes-title">Registro de Actualizaciones</h2>
             <ul className="notes-timeline">
               <li className="timeline-item">
+                <span className="timeline-date">21 de Agosto de 2026</span>
+                <ul className="timeline-updates">
+                  <li className="update-item">
+                    Mejora en la conexión con la base de datos para evitar los errores intermitentes que a veces aparecían cuando varias personas usaban el sistema al mismo tiempo (pantallas en blanco o fallos al cargar datos)
+                  </li>
+                  <li className="update-item">
+                    Mayor protección ante fallos de conexión temporales: si el servidor tiene un problema momentáneo al traer un listado (usuarios, mascotas, indicaciones, etc.), el sistema ahora lo detecta y evita que eso rompa la pantalla actual
+                  </li>
+                  <li className="update-item">
+                    Corrección en el PDF de indicaciones médicas: cuando la receta tenía varios medicamentos, a veces se generaba una segunda hoja innecesaria con muy poco contenido (solo las advertencias y la firma). Se ajustaron los márgenes y el espaciado del documento para aprovechar mejor la primera hoja y evitar esas páginas de más
+                  </li>
+                  <li className="update-item">
+                    Rediseño del encabezado del PDF de indicaciones médicas: se quitó el logo de la esquina superior y ahora aparece centrado y de fondo, en forma de marca de agua muy tenue, detrás de todo el contenido de cada hoja del documento
+                  </li>
+                </ul>
+              </li>
+              <li className="timeline-item">
+                <span className="timeline-date">6 de Agosto de 2026</span>
+                <ul className="timeline-updates">
+                  <li className="update-item">
+                    Se agregó el tipo de documento "Anatomía Patológica" a los documentos médicos de la mascota. Ya se puede seleccionar al cargar un documento nuevo y también al editar uno existente. Dentro de la ficha del paciente, estos estudios se agrupan en su propia sección, con su icono de microscopio y ordenados alfabeticamente junto al resto de los tipos de documentos
+                  </li>
+                </ul>
+              </li>
+              <li className="timeline-item">
                 <span className="timeline-date">28 de Julio de 2026</span>
                 <ul className="timeline-updates">
                   <li className="update-item">

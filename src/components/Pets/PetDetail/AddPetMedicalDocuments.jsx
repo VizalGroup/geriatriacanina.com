@@ -153,6 +153,7 @@ export default function AddPetMedicalDocuments() {
               >
                 <option value="">Seleccione el tipo de documento</option>
                 <option value="0">Análisis</option>
+                <option value="11">Anatomía Patológica</option>
                 <option value="7">Cuestionario</option>
                 <option value="1">Ecografías</option>
                 <option value="8">Electrocardiograma</option>

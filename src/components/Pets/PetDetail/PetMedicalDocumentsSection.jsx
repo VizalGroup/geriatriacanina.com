@@ -21,6 +21,7 @@ import {
   FaChartLine,
   FaImage,
   FaFileMedical,
+  FaMicroscope,
 } from "react-icons/fa";
 import { GiMicroscope } from "react-icons/gi";
 import { getPetMedicalDocumentType, formatDate, formatDateTime, isClient } from "../../../utils";
@@ -67,6 +68,7 @@ export default function PetMedicalDocumentsSection({ petId }) {
       8: <FaChartLine color="#2858BF" size={20} />,       // Electrocardiograma
       9: <FaImage color="#2858BF" size={20} />,           // Fotos
       10: <FaFileMedical color="#2858BF" size={20} />,    // Informe médico
+      11: <FaMicroscope color="#2858BF" size={20} />,     // Anatomía Patológica
     };
     return icons[type] || <FaFileAlt color="#2858BF" size={20} />;
   };

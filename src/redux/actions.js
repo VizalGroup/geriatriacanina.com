@@ -59,12 +59,13 @@ export const GetUsers = () => {
   return async function (dispatch) {
     try {
       var response = await axios.get(usersURL);
-      if (response.data !== null) {
+      if (Array.isArray(response.data)) {
         return dispatch({
           type: GET_USERS,
           payload: response.data,
         });
       } else {
+        console.error("Respuesta inválida al obtener usuarios:", response.data);
         return dispatch({
           type: GET_USERS,
           payload: [],
@@ -304,12 +305,13 @@ export const GetPets = () => {
   return async function (dispatch) {
     try {
       var response = await axios.get(petsURL);
-      if (response.data !== null) {
+      if (Array.isArray(response.data)) {
         return dispatch({
           type: GET_PETS,
           payload: response.data,
         });
       } else {
+        console.error("Respuesta inválida al obtener mascotas:", response.data);
         return dispatch({
           type: GET_PETS,
           payload: [],
@@ -429,12 +431,13 @@ export const GetVetRecords = () => {
   return async function (dispatch) {
     try {
       var response = await axios.get(vetRecordsURL);
-      if (response.data !== null) {
+      if (Array.isArray(response.data)) {
         return dispatch({
           type: GET_VET_RECORDS,
           payload: response.data,
         });
       } else {
+        console.error("Respuesta inválida al obtener historias clínicas:", response.data);
         return dispatch({
           type: GET_VET_RECORDS,
           payload: [],
@@ -549,12 +552,13 @@ export const GetPetMedicalDocuments = () => {
   return async function (dispatch) {
     try {
       var response = await axios.get(petMedicalDocumentsURL);
-      if (response.data !== null) {
+      if (Array.isArray(response.data)) {
         return dispatch({
           type: GET_PET_MEDICAL_DOCUMENTS,
           payload: response.data,
         });
       } else {
+        console.error("Respuesta inválida al obtener documentos médicos:", response.data);
         return dispatch({
           type: GET_PET_MEDICAL_DOCUMENTS,
           payload: [],
@@ -714,12 +718,13 @@ export const GetPasswordResetTokens = () => {
   return async function (dispatch) {
     try {
       var response = await axios.get(passwordResetURL);
-      if (response.data !== null) {
+      if (Array.isArray(response.data)) {
         return dispatch({
           type: GET_PASSWORD_RESET_TOKENS,
           payload: response.data,
         });
       } else {
+        console.error("Respuesta inválida al obtener tokens de reseteo:", response.data);
         return dispatch({
           type: GET_PASSWORD_RESET_TOKENS,
           payload: [],
@@ -738,12 +743,13 @@ export const GetPrescriptions = () => {
   return async function (dispatch) {
     try {
       var response = await axios.get(prescriptionsURL);
-      if (response.data !== null) {
+      if (Array.isArray(response.data)) {
         return dispatch({
           type: GET_PRESCRIPTIONS,
           payload: response.data,
         });
       } else {
+        console.error("Respuesta inválida al obtener prescripciones:", response.data);
         return dispatch({
           type: GET_PRESCRIPTIONS,
           payload: [],
@@ -860,12 +866,13 @@ export const GetPrescriptionMedications = () => {
   return async function (dispatch) {
     try {
       var response = await axios.get(prescriptionMedicationsURL);
-      if (response.data !== null) {
+      if (Array.isArray(response.data)) {
         return dispatch({
           type: GET_PRESCRIPTION_MEDICATIONS,
           payload: response.data,
         });
       } else {
+        console.error("Respuesta inválida al obtener medicamentos de prescripciones:", response.data);
         return dispatch({
           type: GET_PRESCRIPTION_MEDICATIONS,
           payload: [],

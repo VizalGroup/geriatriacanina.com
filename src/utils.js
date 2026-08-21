@@ -205,6 +205,7 @@ export const getPetMedicalDocumentType = (type) => {
     8: "Electrocardiograma",
     9: "Fotos",
     10: "Informe médico",
+    11: "Anatomía Patológica",
   };
 
   return documentTypes[type] || "No especificado";

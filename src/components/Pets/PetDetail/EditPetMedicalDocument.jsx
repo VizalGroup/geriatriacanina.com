@@ -111,6 +111,7 @@ export default function EditPetMedicalDocument({ document }) {
                 disabled={isLoading || uploadingFile}
               >
                 <option value="0">Análisis</option>
+                <option value="11">Anatomía Patológica</option>
                 <option value="7">Cuestionario</option>
                 <option value="1">Ecografías</option>
                 <option value="8">Electrocardiograma</option>
